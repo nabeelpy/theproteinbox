@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Weekly Menu | FuelMultan Performance Meals</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#10B981",
+                        "secondary": "#F59E0B",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0F172A",
+                        "slate-900": "#0F172A",
+                        "slate-800": "#1E293B",
+                        "slate-100": "#F1F5F9"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.75rem",
+                        "xl": "1.25rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #10B98133;
+            border-radius: 10px;
+        }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+
+        .dark .glass-header {
+            background: rgba(15, 23, 42, 0.8);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased font-display">
+    <!-- Top Navigation -->
+    <nav class="sticky top-0 z-50 glass-header border-b border-slate-200/60 dark:border-slate-800/60 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-2">
+                    <a class="flex items-center gap-2" href="../whey_to_go_landing_page/code.html">
+                        <div
+                            class="w-10 h-10 bg-primary flex items-center justify-center rounded-xl shadow-lg shadow-primary/20">
+                            <span class="material-icons text-white">restaurant</span>
+                        </div>
+                        <span class="text-2xl font-extrabold tracking-tight dark:text-white">Fuel<span
+                                class="text-primary italic">Multan</span></span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a class="text-primary border-b-2 border-primary pb-1 font-bold" href="#">Our Meals</a>
+                    <a class="hover:text-primary transition-colors font-medium text-slate-500" href="#">How It Works</a>
+                    <a class="hover:text-primary transition-colors font-medium text-slate-500" href="#">Pricing</a>
+                    <a class="hover:text-primary transition-colors font-medium text-slate-500" href="#">Success
+                        Stories</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="relative group cursor-pointer bg-slate-100 dark:bg-slate-800 p-2.5 rounded-full transition-all hover:scale-105 border border-slate-200/50 dark:border-slate-700/50">
+                            <span class="material-symbols-outlined text-[22px]">shopping_bag</span>
+                            <span
+                                class="absolute -top-1 -right-1 w-5 h-5 bg-secondary text-[10px] font-black text-white flex items-center justify-center rounded-full border-2 border-white dark:border-slate-900 shadow-sm">3</span>
+                        </div>
+                        <a class="bg-primary hover:bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-primary/10"
+                            href="../subscription_checkout/code.html">Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Left Sidebar Filters -->
+            <aside class="w-full lg:w-64 flex-shrink-0 space-y-8">
+                <div class="bg-white dark:bg-white/5 rounded-xl p-6 shadow-sm border border-primary/5">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="font-bold text-lg">Filters</h2>
+                        <button class="text-xs text-primary font-bold hover:underline uppercase">Clear All</button>
+                    </div>
+                    <!-- Dietary Category -->
+                    <div class="space-y-4 mb-8">
+                        <h3 class="text-xs font-800 text-slate-400 uppercase tracking-widest">Dietary Needs</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center group cursor-pointer">
+                                <input checked=""
+                                    class="rounded text-primary focus:ring-primary h-4 w-4 bg-transparent border-primary/30"
+                                    type="checkbox" />
+                                <span class="ml-3 text-sm font-medium group-hover:text-primary">Keto Friendly</span>
+                            </label>
+                            <label class="flex items-center group cursor-pointer">
+                                <input
+                                    class="rounded text-primary focus:ring-primary h-4 w-4 bg-transparent border-primary/30"
+                                    type="checkbox" />
+                                <span class="ml-3 text-sm font-medium group-hover:text-primary">High Protein</span>
+                            </label>
+                            <label class="flex items-center group cursor-pointer">
+                                <input
+                                    class="rounded text-primary focus:ring-primary h-4 w-4 bg-transparent border-primary/30"
+                                    type="checkbox" />
+                                <span class="ml-3 text-sm font-medium group-hover:text-primary">Plant Based</span>
+                            </label>
+                            <label class="flex items-center group cursor-pointer">
+                                <input
+                                    class="rounded text-primary focus:ring-primary h-4 w-4 bg-transparent border-primary/30"
+                                    type="checkbox" />
+                                <span class="ml-3 text-sm font-medium group-hover:text-primary">Gluten Free</span>
+                            </label>
+                            <label class="flex items-center group cursor-pointer">
+                                <input
+                                    class="rounded text-primary focus:ring-primary h-4 w-4 bg-transparent border-primary/30"
+                                    type="checkbox" />
+                                <span class="ml-3 text-sm font-medium group-hover:text-primary">Dairy Free</span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Macro Ranges -->
+                    <div class="space-y-4 mb-8">
+                        <h3 class="text-xs font-800 text-slate-400 uppercase tracking-widest">Macro Goals</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-[11px] mb-1">
+                                    <span class="font-bold">Protein (g)</span>
+                                    <span class="text-primary font-bold">30g+</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-[11px] mb-1">
+                                    <span class="font-bold">Max Calories</span>
+                                    <span class="text-primary font-bold">600 kcal</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary" style="width: 45%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Protein Source -->
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-800 text-slate-400 uppercase tracking-widest">Main Protein</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <button
+                                class="px-3 py-1.5 rounded-lg border border-primary text-primary text-xs font-bold bg-primary/5 hover:bg-primary/10">Chicken</button>
+                            <button
+                                class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 text-xs font-bold hover:border-primary transition-colors">Beef</button>
+                            <button
+                                class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 text-xs font-bold hover:border-primary transition-colors">Turkey</button>
+                            <button
+                                class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 text-xs font-bold hover:border-primary transition-colors">Tofu</button>
+                            <button
+                                class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 text-xs font-bold hover:border-primary transition-colors">Fish</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Box Summary Sidebar (Sticky-ish) -->
+                <div class="bg-primary/5 rounded-xl p-6 border-2 border-dashed border-primary/20">
+                    <h3 class="font-bold mb-2">My Weekly Box</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Add 8-12 meals for free shipping!</p>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="flex-1 h-3 bg-white dark:bg-white/10 rounded-full p-0.5 overflow-hidden">
+                            <div class="h-full bg-primary rounded-full" style="width: 37%"></div>
+                        </div>
+                        <span class="text-xs font-bold">3/8</span>
+                    </div>
+                    <button
+                        class="w-full py-3 bg-background-dark dark:bg-primary text-white dark:text-background-dark rounded-lg text-sm font-bold opacity-50 cursor-not-allowed">
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </aside>
+            <!-- Main Content Area -->
+            <div class="flex-1">
+                <!-- Grid Header -->
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                    <div>
+                        <h1 class="text-3xl font-800 mb-2">Performance Meals</h1>
+                        <p class="text-slate-500 dark:text-slate-400">Showing 48 chef-curated macro-balanced meals.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm font-bold text-slate-400">Sort by:</span>
+                        <select
+                            class="bg-white dark:bg-white/5 border border-primary/10 rounded-lg text-sm font-bold py-2 pl-4 pr-10 focus:ring-primary">
+                            <option>Most Popular</option>
+                            <option>Protein: High to Low</option>
+                            <option>Calories: Low to High</option>
+                            <option>Newest Arrivals</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Active Chips -->
+                <div class="flex flex-wrap gap-2 mb-8">
+                    <div
+                        class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2">
+                        Keto <span class="material-icons-outlined text-sm cursor-pointer">close</span>
+                    </div>
+                    <div
+                        class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2">
+                        Chicken <span class="material-icons-outlined text-sm cursor-pointer">close</span>
+                    </div>
+                    <div
+                        class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2">
+                        High Protein <span class="material-icons-outlined text-sm cursor-pointer">close</span>
+                    </div>
+                </div>
+                <!-- Meal Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Card 1 -->
+                    <div
+                        class="bg-white dark:bg-white/5 rounded-xl overflow-hidden shadow-sm group hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 border border-primary/5">
+                        <div class="relative h-56">
+                            <img alt="Grilled Chicken Power Bowl"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                data-alt="Close up of healthy grilled chicken power bowl with fresh vegetables"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBs_JKc31sXR1-7M5pxoPlcolhOLufuzlirU7d9e5RU2rHEQLd4tkfxc3FVvQbh0jBln5FC5r5OBccFhyZ6gp-N7JQQC6KZtOaW8iMntdi80FIEEhdcQ0c4R7BmQk2suW7f-ue6YsU04MUjO0wZhft1RYY5dpTxf8_UrHhVynukGNz6LkkzW0vlW2uanrxDydOrd4IBDtEF7Kk-ufp5u7C-vAdb3x0MHYAsh3mxPPFN85yeKFAOoy3DWpKZSR9EgoI17es_1E-A62E" />
+                            <div class="absolute top-4 left-4 flex gap-2">
+                                <span
+                                    class="bg-background-dark/80 text-primary text-[10px] font-800 px-2 py-1 rounded uppercase tracking-wider backdrop-blur-sm">Keto</span>
+                                <span
+                                    class="bg-primary text-background-dark text-[10px] font-800 px-2 py-1 rounded uppercase tracking-wider">Top
+                                    Rated</span>
+                            </div>
+                            <div class="absolute bottom-4 left-4 right-4 flex justify-between gap-1">
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Prot</p>
+                                    <p class="text-sm font-800">42g</p>
+                                </div>
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Carb</p>
+                                    <p class="text-sm font-800">12g</p>
+                                </div>
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Fat</p>
+                                    <p class="text-sm font-800">28g</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-800 text-lg leading-tight flex-1">Lemon Herb Roasted Chicken &amp;
+                                    Asparagus</h3>
+                                <span class="text-primary font-800 text-lg">$12.99</span>
+                            </div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">Slow-roasted chicken
+                                breast with lemon zest, served over buttery asparagus and cherry tomatoes.</p>
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="flex items-center gap-1">
+                                    <span
+                                        class="material-icons-outlined text-primary text-lg">local_fire_department</span>
+                                    <span class="text-sm font-bold">480 kcal</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-outlined text-slate-400 text-lg">schedule</span>
+                                    <span class="text-sm font-medium text-slate-400">3 mins</span>
+                                </div>
+                            </div>
+                            <button
+                                class="w-full bg-primary hover:bg-primary/90 text-background-dark font-800 py-3 rounded-xl transition-all flex items-center justify-center gap-2 group/btn">
+                                <span>ADD TO BOX</span>
+                                <span
+                                    class="material-icons-outlined text-sm group-hover/btn:translate-x-1 transition-transform">add_circle</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div
+                        class="bg-white dark:bg-white/5 rounded-xl overflow-hidden shadow-sm group hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 border border-primary/5">
+                        <div class="relative h-56">
+                            <img alt="Superfood Vegan Buddha Bowl"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                data-alt="Colorful plant-based salad bowl with avocado and quinoa"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdbZerY-ZiqNPpMU8kFhhX5t8PofX89HgS2pY_t-NiyQFlH-RPdAOmd3pRAllxNeOMlFk5guJNAe_Pyv02uy5WUuDRi5VmroydqtNlNyg_bHysU-9kTcVY-2yW6Iv2GxGY7yVAjfS0JBssFRCeq8axCF9VCLuEEo48PkNkNhZeyE5JzevM2aW3dY_qkEs7XpUxPcolOUc3e4oPk6im3nlG-0iVR1vSInMm-e08v2K0zvwruCVRX-KF2_LeHWBNIL-7q_88fyGbDxg" />
+                            <div class="absolute top-4 left-4 flex gap-2">
+                                <span
+                                    class="bg-background-dark/80 text-primary text-[10px] font-800 px-2 py-1 rounded uppercase tracking-wider backdrop-blur-sm">Vegan</span>
+                            </div>
+                            <div class="absolute bottom-4 left-4 right-4 flex justify-between gap-1">
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Prot</p>
+                                    <p class="text-sm font-800">22g</p>
+                                </div>
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Carb</p>
+                                    <p class="text-sm font-800">65g</p>
+                                </div>
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Fat</p>
+                                    <p class="text-sm font-800">18g</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-800 text-lg leading-tight flex-1">Triple-Green Quinoa Buddha Bowl</h3>
+                                <span class="text-primary font-800 text-lg">$11.50</span>
+                            </div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">Protein-packed
+                                quinoa topped with roasted kale, broccoli florets, edamame, and tahini drizzle.</p>
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="flex items-center gap-1">
+                                    <span
+                                        class="material-icons-outlined text-primary text-lg">local_fire_department</span>
+                                    <span class="text-sm font-bold">520 kcal</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-outlined text-slate-400 text-lg">schedule</span>
+                                    <span class="text-sm font-medium text-slate-400">2 mins</span>
+                                </div>
+                            </div>
+                            <button
+                                class="w-full bg-primary hover:bg-primary/90 text-background-dark font-800 py-3 rounded-xl transition-all flex items-center justify-center gap-2 group/btn">
+                                <span>ADD TO BOX</span>
+                                <span
+                                    class="material-icons-outlined text-sm group-hover/btn:translate-x-1 transition-transform">add_circle</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div
+                        class="bg-white dark:bg-white/5 rounded-xl overflow-hidden shadow-sm group hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 border border-primary/5">
+                        <div class="relative h-56">
+                            <img alt="Beef Steak Stir Fry"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                data-alt="High protein beef steak pieces with peppers and onions"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmydmAVV_sbi4_agRjExTX6G25NM3cBT_TpBmMcWFxDsyI-gzNhoS5bIO1E_7RuZL-tRLUxWNKMWvS4zWTHT2UdEP92M4l59S-z5MKbwUCF3AXY40r3WLyLpdbeHRgMs7AIRfEX964WLF5grChhK9vjgp2M_vsASQO48tDDyLXFigs5mr2z-DSGQB3O82GDc3CgMa9a7XrZ-gf7Am-jCy3ElolTdVN38chTA8waxSf5c8ZyGX2Ev1QO08Gs1-5hWHLX-_PgXpjveI" />
+                            <div class="absolute top-4 left-4 flex gap-2">
+                                <span
+                                    class="bg-background-dark/80 text-primary text-[10px] font-800 px-2 py-1 rounded uppercase tracking-wider backdrop-blur-sm">High
+                                    Protein</span>
+                            </div>
+                            <div class="absolute bottom-4 left-4 right-4 flex justify-between gap-1">
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Prot</p>
+                                    <p class="text-sm font-800">54g</p>
+                                </div>
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Carb</p>
+                                    <p class="text-sm font-800">14g</p>
+                                </div>
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Fat</p>
+                                    <p class="text-sm font-800">32g</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-800 text-lg leading-tight flex-1">Garlic Pepper Grass-Fed Beef Strips
+                                </h3>
+                                <span class="text-primary font-800 text-lg">$14.25</span>
+                            </div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">Premium grass-fed
+                                beef seared with cracked black pepper and fresh garlic cloves.</p>
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="flex items-center gap-1">
+                                    <span
+                                        class="material-icons-outlined text-primary text-lg">local_fire_department</span>
+                                    <span class="text-sm font-bold">590 kcal</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-outlined text-slate-400 text-lg">schedule</span>
+                                    <span class="text-sm font-medium text-slate-400">4 mins</span>
+                                </div>
+                            </div>
+                            <button
+                                class="w-full bg-primary hover:bg-primary/90 text-background-dark font-800 py-3 rounded-xl transition-all flex items-center justify-center gap-2 group/btn">
+                                <span>ADD TO BOX</span>
+                                <span
+                                    class="material-icons-outlined text-sm group-hover/btn:translate-x-1 transition-transform">add_circle</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Card 4 -->
+                    <div
+                        class="bg-white dark:bg-white/5 rounded-xl overflow-hidden shadow-sm group hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 border border-primary/5">
+                        <div class="relative h-56">
+                            <img alt="Low Carb Pesto Pizza"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                data-alt="Thin crust pesto chicken pizza with mozzarella"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzh9tjLIhdaf7KqLHeCXsHJBWPhFSwFWmOrtVr5mTAsSf2a4LPyQUU_G9Nxbraa0JewY5o84YEJSqbxhHLyD1kIt_0t6uWKj8FCYVleNKHi5aIVE01yd34lADCGeK2N0QfgQySHxcvQhxKkyGBaUqvd2byCGKZVyaoUL8iSJ85YwGYh05wiIvg5dhEfi4UEnDuSyg6sCOkYCVjkaZhFM6mldb61_oAeH5adBmpJpP4soP6kns6KFpKap0ys2H26zX9otw9_s7iCqs" />
+                            <div class="absolute top-4 left-4 flex gap-2">
+                                <span
+                                    class="bg-background-dark/80 text-primary text-[10px] font-800 px-2 py-1 rounded uppercase tracking-wider backdrop-blur-sm">Low
+                                    Carb</span>
+                            </div>
+                            <div class="absolute bottom-4 left-4 right-4 flex justify-between gap-1">
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Prot</p>
+                                    <p class="text-sm font-800">38g</p>
+                                </div>
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Carb</p>
+                                    <p class="text-sm font-800">18g</p>
+                                </div>
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Fat</p>
+                                    <p class="text-sm font-800">24g</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-800 text-lg leading-tight flex-1">Cauliflower Crust Chicken Pesto</h3>
+                                <span class="text-primary font-800 text-lg">$13.50</span>
+                            </div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">Gluten-free
+                                cauliflower base topped with artisan basil pesto, grilled chicken, and fresh mozzarella.
+                            </p>
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="flex items-center gap-1">
+                                    <span
+                                        class="material-icons-outlined text-primary text-lg">local_fire_department</span>
+                                    <span class="text-sm font-bold">455 kcal</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-outlined text-slate-400 text-lg">schedule</span>
+                                    <span class="text-sm font-medium text-slate-400">5 mins</span>
+                                </div>
+                            </div>
+                            <button
+                                class="w-full bg-primary hover:bg-primary/90 text-background-dark font-800 py-3 rounded-xl transition-all flex items-center justify-center gap-2 group/btn">
+                                <span>ADD TO BOX</span>
+                                <span
+                                    class="material-icons-outlined text-sm group-hover/btn:translate-x-1 transition-transform">add_circle</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Card 5 -->
+                    <div
+                        class="bg-white dark:bg-white/5 rounded-xl overflow-hidden shadow-sm group hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 border border-primary/5">
+                        <div class="relative h-56">
+                            <img alt="Miso Salmon"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                data-alt="Atlantic salmon fillet with sesame seeds and stir fried bok choy"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCImCUV__RFv-YtcEX-IYoBK8DbdB5UXcIc11LPdgNi4qO15uNf9ODInjLfl14hRgkOzTnWOtYIAU9p3FCpTHJtbXSeirUXnpbr-aIT5oyuoT6Y7UJi4SOlr8qjSeZysf_Ms-gGdpRXBu29CDXk3Ww2pDIqQlc-TouahEXijHIaDi3RHYY3dBlfkLgkjaaON5Hsuw0MifK47sKwFyGQKYQu77vHnWG-ZO1P-_OboMqIyJoEUyPAE09QnFzciQkxz4pUKEmNGRBLp54" />
+                            <div class="absolute top-4 left-4 flex gap-2">
+                                <span
+                                    class="bg-background-dark/80 text-primary text-[10px] font-800 px-2 py-1 rounded uppercase tracking-wider backdrop-blur-sm">Omega-3</span>
+                            </div>
+                            <div class="absolute bottom-4 left-4 right-4 flex justify-between gap-1">
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Prot</p>
+                                    <p class="text-sm font-800">45g</p>
+                                </div>
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Carb</p>
+                                    <p class="text-sm font-800">8g</p>
+                                </div>
+                                <div
+                                    class="flex-1 bg-black/40 backdrop-blur-md rounded-lg p-2 text-center text-white border border-white/10">
+                                    <p class="text-[10px] uppercase font-bold text-slate-300">Fat</p>
+                                    <p class="text-sm font-800">30g</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-800 text-lg leading-tight flex-1">Atlantic Salmon with Ginger Bok Choy
+                                </h3>
+                                <span class="text-primary font-800 text-lg">$15.99</span>
+                            </div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">Wild-caught salmon
+                                glazed in honey-miso, served with steamed bok choy and sesame seasoning.</p>
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="flex items-center gap-1">
+                                    <span
+                                        class="material-icons-outlined text-primary text-lg">local_fire_department</span>
+                                    <span class="text-sm font-bold">510 kcal</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-outlined text-slate-400 text-lg">schedule</span>
+                                    <span class="text-sm font-medium text-slate-400">4 mins</span>
+                                </div>
+                            </div>
+                            <button
+                                class="w-full bg-primary hover:bg-primary/90 text-background-dark font-800 py-3 rounded-xl transition-all flex items-center justify-center gap-2 group/btn">
+                                <span>ADD TO BOX</span>
+                        </div>
+                        <!-- Meal Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                            <!-- Card 1 -->
+                            <div
+                                class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm group hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800">
+                                <div class="relative h-64 overflow-hidden">
+                                    <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                        data-alt="Emerald Chicken Bowl"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBweUClwgccvHJHALkRs3WCpjDhIoghTbOpq_Nj-E2011bNHivZSt9kDbq0erWq5vCWCCBK6BKeDuEDB62FUFTFRrm3PVrpJdg5jZrf1XbVhPLadcnOP958moncP_CjgMKmat3e36b9z08TaP-OSE" />
+                                    <div
+                                        class="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
+                                        HIGH PROTEIN</div>
+                                    <div class="absolute bottom-4 left-4 right-4 flex justify-between gap-2">
+                                        <div
+                                            class="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-2 text-center border border-white/20">
+                                            <p class="text-[9px] uppercase font-black text-slate-500 tracking-widest">
+                                                Prot</p>
+                                            <p class="text-sm font-bold text-primary">42g</p>
+                                        </div>
+                                        <div
+                                            class="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-2 text-center border border-white/20">
+                                            <p class="text-[9px] uppercase font-black text-slate-500 tracking-widest">
+                                                Carb</p>
+                                            <p class="text-sm font-bold">38g</p>
+                                        </div>
+                                        <div
+                                            class="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-2 text-center border border-white/20">
+                                            <p class="text-[9px] uppercase font-black text-slate-500 tracking-widest">
+                                                Fat</p>
+                                            <p class="text-sm font-bold">12g</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="material-icons text-primary text-base">local_fire_department</span>
+                                            <span
+                                                class="text-xs font-black text-slate-500 uppercase tracking-widest">480
+                                                kcal</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-icons text-slate-400 text-sm">schedule</span>
+                                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">3
+                                                mins</span>
+                                        </div>
+                                    </div>
+                                    <h4 class="text-xl font-extrabold mb-2 dark:text-white">Multani Emerald Chicken</h4>
+                                    <p class="text-slate-400 text-sm mb-8 leading-relaxed">Spiced grilled chicken over a
+                                        bed of zesty herbed jasmine rice.</p>
+                                    <a class="w-full bg-primary hover:bg-emerald-600 text-white font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-primary/10"
+                                        href="../meal_detail_view/code.html">
+                                        <span>VIEW DETAILS</span>
+                                        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- Card 2 -->
+                            <div
+                                class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm group hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800">
+                                <div class="relative h-64 overflow-hidden">
+                                    <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                        data-alt="Royal Zaatar Beef"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxTfFRZHpUo29_8jJIqwVad72HT-9Im3-zcpUdInQzisnZcjPMZzjEazVyJms_x4-KEDdQO_1WAZ2RmEuK9Q6d2Ggtkspqu2RB05w6tWw0G2F_jJsoCCG6PBpDpNCKvuRwNrj7_u92uj6S_NYV2UMU8k1Yh31tdnRoeroeDv2h68kanO9P1IjlKvkMiN0qSZvW1TpDi0hhn-DGJNGdq8-9o4A0tdBWYAlvmc5q0gkh59Tw" />
+                                    <div
+                                        class="absolute top-4 left-4 bg-secondary text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
+                                        KETO OPTION</div>
+                                    <div class="absolute bottom-4 left-4 right-4 flex justify-between gap-2">
+                                        <div
+                                            class="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-2 text-center border border-white/20">
+                                            <p class="text-[9px] uppercase font-black text-slate-500 tracking-widest">
+                                                Prot</p>
+                                            <p class="text-sm font-bold text-primary">48g</p>
+                                        </div>
+                                        <div
+                                            class="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-2 text-center border border-white/20">
+                                            <p class="text-[9px] uppercase font-black text-slate-500 tracking-widest">
+                                                Carb</p>
+                                            <p class="text-sm font-bold">12g</p>
+                                        </div>
+                                        <div
+                                            class="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-2 text-center border border-white/20">
+                                            <p class="text-[9px] uppercase font-black text-slate-500 tracking-widest">
+                                                Fat</p>
+                                            <p class="text-sm font-bold">16g</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="material-icons text-primary text-base">local_fire_department</span>
+                                            <span
+                                                class="text-xs font-black text-slate-500 uppercase tracking-widest">520
+                                                kcal</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-icons text-slate-400 text-sm">schedule</span>
+                                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">3
+                                                mins</span>
+                                        </div>
+                                    </div>
+                                    <h4 class="text-xl font-extrabold mb-2 dark:text-white">Royal Zaatar Beef</h4>
+                                    <p class="text-slate-400 text-sm mb-8 leading-relaxed">Lean strips of beef with
+                                        roasted cauliflower mash and signature sauce.</p>
+                                    <button
+                                        class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white dark:text-white font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-3">
+                                        <span>ADD TO BOX</span>
+                                        <span class="material-symbols-outlined text-lg">add_task</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Card 3 -->
+                            <div
+                                class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm group hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800">
+                                <div class="relative h-64 overflow-hidden">
+                                    <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                        data-alt="Multani Spiced Quinoa"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaPQNhmpYEhienVl_DaU2oa6gY5Uh1vJwOec7xzww3jE1_mg4AAGXGugVCAxZSkFEY_CdCwcSKfdcWaMznVzJV0SZnnbiwA5sZpy_AdhMflgNEBXribX76OiTllRS04uTMjlzF2zWkUREsrbZhJ46OA0r5YaSUCD6JqvPRQFL5h6-uHWgWQTF9KlXPcocGArKWJyrG08MfGE-6XZWKEOhtaoh1f3ZjM9-TB2GHq6xCgOXpGgPc0x5RpC-9_IDEwG-J3I0i0ivYDUM" />
+                                    <div
+                                        class="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
+                                        LEAN PLAN</div>
+                                    <div class="absolute bottom-4 left-4 right-4 flex justify-between gap-2">
+                                        <div
+                                            class="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-2 text-center border border-white/20">
+                                            <p class="text-[9px] uppercase font-black text-slate-500 tracking-widest">
+                                                Prot</p>
+                                            <p class="text-sm font-bold text-primary">32g</p>
+                                        </div>
+                                        <div
+                                            class="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-2 text-center border border-white/20">
+                                            <p class="text-[9px] uppercase font-black text-slate-500 tracking-widest">
+                                                Carb</p>
+                                            <p class="text-sm font-bold">45g</p>
+                                        </div>
+                                        <div
+                                            class="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-2 text-center border border-white/20">
+                                            <p class="text-[9px] uppercase font-black text-slate-500 tracking-widest">
+                                                Fat</p>
+                                            <p class="text-sm font-bold">8g</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="material-icons text-primary text-base">local_fire_department</span>
+                                            <span
+                                                class="text-xs font-black text-slate-500 uppercase tracking-widest">410
+                                                kcal</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="material-icons text-slate-400 text-sm">schedule</span>
+                                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">3
+                                                mins</span>
+                                        </div>
+                                    </div>
+                                    <h4 class="text-xl font-extrabold mb-2 dark:text-white">Multani Spiced Quinoa</h4>
+                                    <p class="text-slate-400 text-sm mb-8 leading-relaxed">Local herbs infused quinoa
+                                        bowl with garden vegetables and feta.</p>
+                                    <button
+                                        class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white dark:text-white font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-3">
+                                        <span>ADD TO BOX</span>
+                                        <span class="material-symbols-outlined text-lg">add_task</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Load More -->
+                        <div class="mt-12 flex flex-col items-center">
+                            <p class="text-sm text-slate-400 mb-4 font-medium">Viewing 6 of 48 delicious meals</p>
+                            <button
+                                class="px-10 py-4 border-2 border-primary text-primary hover:bg-primary hover:text-background-dark font-800 rounded-full transition-all">
+                                LOAD MORE MEALS
+                            </button>
+                        </div>
+                    </div>
+                </div>
+    </main>
+    <!-- Floating Help Button -->
+    <div class="fixed bottom-8 right-8 z-40">
+        <button
+            class="bg-background-dark dark:bg-white text-primary dark:text-background-dark p-4 rounded-full shadow-2xl flex items-center gap-2 hover:scale-110 transition-transform">
+            <span class="material-icons-outlined">support_agent</span>
+            <span class="font-bold text-sm hidden md:inline">Nutrition Chat</span>
+        </button>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-background-dark/50 border-t border-primary/10 py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="flex justify-center items-center gap-2 mb-8">
+                <div class="bg-primary/20 p-2 rounded-lg">
+                    <span class="material-icons-outlined text-primary font-bold">bolt</span>
+                </div>
+                <span class="text-2xl font-800 tracking-tighter text-background-dark dark:text-white">FIT<span
+                        class="text-primary">FUEL</span></span>
+            </div>
+            <div
+                class="flex flex-wrap justify-center gap-8 text-sm font-bold text-slate-500 uppercase tracking-widest mb-12">
+                <a class="hover:text-primary" href="#">Contact</a>
+                <a class="hover:text-primary" href="#">FAQ</a>
+                <a class="hover:text-primary" href="#">Privacy Policy</a>
+                <a class="hover:text-primary" href="#">Terms of Service</a>
+            </div>
+            <p class="text-slate-400 text-sm">© 2024 FitFuel Meals Inc. Performance-driven nutrition delivered to your
+                door.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

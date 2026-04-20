@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Weekly Meal Plan | FuelMultan</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════
+   RESET & DESIGN TOKENS (matching site)
+══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g:#22c55e;
+  --gd:#16a34a;
+  --gp:#f0fdf4;
+  --gm:#dcfce7;
+  --text:#0b0f19;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --bg:#f8fafc;
+  --white:#ffffff;
+  --dark:#0b0f19;
+  --dark2:#111827;
+  --r8:8px;--r12:12px;--r16:16px;--r20:20px;--r24:24px;
+  --s1:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --s2:0 4px 16px rgba(0,0,0,.08);
+  --s3:0 16px 48px rgba(0,0,0,.12);
+  --sg:0 8px 32px rgba(34,197,94,.25);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
+button{font-family:'Inter',sans-serif;cursor:pointer;border:none;outline:none;}
+
+/* ══════════════════════════════════════════
+   NAVBAR (identical to site)
+══════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:1px solid rgba(226,232,240,0.7);
+  transition:box-shadow .3s;
+}
+nav.scrolled{box-shadow:0 2px 24px rgba(0,0,0,.07);}
+.nav-w{max-width:1280px;margin:0 auto;padding:0 32px;height:68px;display:flex;align-items:center;}
+.logo{display:flex;align-items:center;gap:9px;font-size:21px;font-weight:900;color:var(--text);letter-spacing:-.02em;margin-right:52px;flex-shrink:0;}
+.logo-mark{width:34px;height:34px;background:var(--g);border-radius:9px;display:flex;align-items:center;justify-content:center;}
+.logo-mark svg{width:18px;height:18px;fill:white;}
+.logo em{font-style:italic;color:var(--g);}
+.nav-links{display:flex;gap:2px;flex:1;}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--muted);padding:7px 14px;border-radius:var(--r8);transition:color .17s,background .17s;}
+.nav-links a:hover{color:var(--text);background:#f1f5f9;}
+.nav-links a.active{color:var(--g);font-weight:700;}
+.nav-r{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.btn-ghost{background:none;border:none;font-size:13.5px;font-weight:600;color:var(--text);padding:8px 14px;border-radius:var(--r8);cursor:pointer;transition:color .17s,background .17s;}
+.btn-ghost:hover{background:#f1f5f9;}
+.btn-cta{background:var(--g);color:white;border:none;border-radius:var(--r12);font-size:13.5px;font-weight:700;padding:10px 22px;cursor:pointer;transition:background .18s,transform .15s,box-shadow .18s;box-shadow:0 2px 12px rgba(34,197,94,.3);}
+.btn-cta:hover{background:var(--gd);transform:scale(1.03);box-shadow:var(--sg);}
+
+/* ══════════════════════════════════════════
+   PAGE HERO HEADER
+══════════════════════════════════════════ */
+.page-header{
+  margin-top:68px;
+  background:var(--dark);
+  padding:64px 32px 0;
+  position:relative;
+  overflow:hidden;
+}
+.page-header::before{
+  content:'';position:absolute;
+  width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(34,197,94,.14) 0%,transparent 65%);
+  top:-200px;right:-100px;pointer-events:none;
+}
+.ph-inner{max-width:1280px;margin:0 auto;}
+.ph-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);
+  color:#4ade80;border-radius:50px;
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:6px 14px;margin-bottom:24px;
+}
+.ph-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
+.ph-h1{
+  font-size:clamp(36px,4.5vw,58px);font-weight:900;
+  letter-spacing:-.035em;line-height:1.08;
+  color:white;margin-bottom:16px;
+}
+.ph-h1 em{font-style:italic;color:var(--g);}
+.ph-sub{font-size:16px;color:#94a3b8;max-width:560px;line-height:1.65;margin-bottom:48px;}
+
+/* Day selector tabs sitting at bottom of header */
+.day-tabs-wrap{
+  display:flex;align-items:flex-end;gap:0;
+  border-top:1px solid rgba(255,255,255,.07);
+  margin-top:8px;
+}
+.day-tab{
+  padding:16px 28px;font-size:14px;font-weight:600;color:#64748b;
+  border:none;background:none;cursor:pointer;
+  border-bottom:3px solid transparent;
+  transition:color .18s,border-color .18s;
+  white-space:nowrap;
+  position:relative;
+}
+.day-tab:hover{color:#cbd5e1;}
+.day-tab.active{color:white;border-bottom:3px solid var(--g);}
+.day-tab .tab-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:20px;height:20px;border-radius:50%;
+  font-size:9px;font-weight:800;margin-left:7px;
+  background:rgba(34,197,94,.15);color:#4ade80;
+  transition:background .18s;
+}
+.day-tab.active .tab-badge{background:var(--g);color:white;}
+
+/* ══════════════════════════════════════════
+   MAIN LAYOUT
+══════════════════════════════════════════ */
+.page-body{max-width:1280px;margin:0 auto;padding:40px 32px 100px;display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start;}
+@media(max-width:1100px){.page-body{grid-template-columns:1fr;}}
+
+/* ══════════════════════════════════════════
+   PLAN DURATION TOGGLE (5 / 6 / 7 days)
+══════════════════════════════════════════ */
+.plan-controls{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;
+  margin-bottom:32px;
+}
+.duration-toggle{
+  display:flex;gap:0;
+  background:white;border:1px solid var(--border);
+  border-radius:var(--r12);padding:4px;
+  box-shadow:var(--s1);
+}
+.dur-btn{
+  padding:9px 20px;border-radius:var(--r8);
+  font-size:13px;font-weight:700;color:var(--muted);
+  background:none;cursor:pointer;
+  transition:background .18s,color .18s,box-shadow .18s;
+  display:flex;flex-direction:column;align-items:center;gap:1px;
+}
+.dur-btn .dur-label{font-size:13px;font-weight:700;}
+.dur-btn .dur-sub{font-size:9.5px;font-weight:500;color:#94a3b8;letter-spacing:.03em;}
+.dur-btn.active{background:var(--dark);color:white;box-shadow:var(--s2);}
+.dur-btn.active .dur-sub{color:#94a3b8;}
+
+.plan-info-row{display:flex;align-items:center;gap:10px;}
+.pill-info{
+  font-size:12px;font-weight:600;color:var(--muted);
+  background:white;border:1px solid var(--border);
+  border-radius:50px;padding:6px 14px;
+}
+.pill-info strong{color:var(--text);}
+
+/* ══════════════════════════════════════════
+   WEEK GRID (days as columns)
+══════════════════════════════════════════ */
+.week-grid{
+  display:grid;
+  gap:20px;
+}
+/* Each day row */
+.day-row{
+  background:white;border:1px solid var(--border);
+  border-radius:var(--r20);overflow:hidden;
+  transition:box-shadow .2s;
+}
+.day-row:hover{box-shadow:var(--s2);}
+.day-row.rest-day{opacity:.7;}
+
+.day-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;user-select:none;
+}
+.day-header-left{display:flex;align-items:center;gap:14px;}
+.day-num{
+  width:40px;height:40px;border-radius:var(--r12);
+  background:var(--gp);border:1.5px solid var(--gm);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:900;color:var(--g);
+  flex-shrink:0;
+}
+.day-row.rest-day .day-num{background:#f1f5f9;border-color:#e2e8f0;color:#94a3b8;}
+.day-name-wrap{}
+.day-name{font-size:15px;font-weight:800;letter-spacing:-.01em;}
+.day-date{font-size:11.5px;color:var(--muted);margin-top:1px;}
+.day-macros-summary{
+  display:flex;gap:16px;align-items:center;
+}
+.dms-item{text-align:center;}
+.dms-val{font-size:14px;font-weight:800;}
+.dms-val.kcal{color:var(--g);}
+.dms-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+.day-chevron{
+  width:28px;height:28px;border-radius:50%;
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .25s,background .18s;flex-shrink:0;
+}
+.day-chevron svg{width:14px;height:14px;stroke:var(--muted);fill:none;stroke-width:2.2;transition:transform .25s;}
+.day-row.open .day-chevron svg{transform:rotate(180deg);}
+.day-row.open .day-chevron{background:var(--gp);border-color:var(--gm);}
+
+/* Meal slots inside each day */
+.day-meals{
+  padding:16px 20px;
+  display:none;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.day-row.open .day-meals{display:grid;}
+
+/* Meal slot card */
+.meal-slot{
+  border:1.5px dashed var(--border);
+  border-radius:var(--r16);
+  overflow:hidden;
+  transition:border-color .2s,box-shadow .2s;
+  position:relative;
+  background:var(--bg);
+  min-height:180px;
+}
+.meal-slot.filled{border-style:solid;border-color:var(--border);background:white;}
+.meal-slot:hover{border-color:var(--g);box-shadow:0 4px 16px rgba(34,197,94,.1);}
+.meal-slot.dragging-over{border-color:var(--g);background:var(--gp);box-shadow:0 4px 20px rgba(34,197,94,.2);}
+
+/* Empty slot */
+.slot-empty{
+  height:100%;min-height:180px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;padding:20px;cursor:pointer;
+}
+.slot-empty-icon{
+  width:38px;height:38px;border-radius:50%;
+  background:white;border:1.5px dashed #cbd5e1;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:4px;transition:border-color .18s,background .18s;
+}
+.meal-slot:hover .slot-empty-icon{border-color:var(--g);background:var(--gp);}
+.slot-empty-icon svg{width:16px;height:16px;stroke:#94a3b8;fill:none;stroke-width:2;transition:stroke .18s;}
+.meal-slot:hover .slot-empty-icon svg{stroke:var(--g);}
+.slot-type{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;}
+.slot-hint{font-size:10.5px;color:#cbd5e1;text-align:center;line-height:1.4;}
+
+/* Filled slot */
+.slot-filled{position:relative;}
+.slot-img{height:100px;overflow:hidden;}
+.slot-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+.meal-slot.filled:hover .slot-img img{transform:scale(1.06);}
+.slot-body{padding:10px 12px 12px;}
+.slot-meal-type{
+  font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--g);margin-bottom:4px;
+}
+.slot-meal-name{font-size:12.5px;font-weight:800;line-height:1.3;margin-bottom:6px;}
+.slot-macros{display:flex;gap:6px;}
+.sm{font-size:10px;font-weight:700;color:var(--muted);}
+.sm span{color:var(--text);}
+.slot-remove{
+  position:absolute;top:8px;right:8px;
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(0,0,0,.5);border:none;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;opacity:0;transition:opacity .18s;
+}
+.meal-slot.filled:hover .slot-remove{opacity:1;}
+.slot-remove svg{width:10px;height:10px;stroke:white;fill:none;stroke-width:2.5;}
+
+/* Rest day UI */
+.rest-day-body{
+  padding:24px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;
+}
+.rest-day-body.hidden{display:none;}
+.rest-msg{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;}
+.rest-msg svg{width:16px;height:16px;stroke:#94a3b8;fill:none;stroke-width:1.8;}
+.rest-toggle{
+  font-size:12px;font-weight:700;color:var(--g);
+  background:var(--gp);border:1px solid var(--gm);
+  border-radius:50px;padding:6px 16px;cursor:pointer;
+  transition:background .18s;
+}
+.rest-toggle:hover{background:var(--gm);}
+
+/* ══════════════════════════════════════════
+   MEAL PICKER DRAWER (right panel)
+══════════════════════════════════════════ */
+.sidebar-panel{
+  position:sticky;top:88px;
+}
+.panel-card{
+  background:white;border:1px solid var(--border);
+  border-radius:var(--r24);overflow:hidden;
+  box-shadow:var(--s1);
+}
+
+/* Summary section */
+.summary-head{
+  background:var(--dark);padding:24px;
+}
+.sum-title{font-size:13px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px;}
+.sum-macros{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.sum-macro{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:var(--r12);padding:14px;
+  text-align:center;
+}
+.sum-macro-val{font-size:26px;font-weight:900;color:white;letter-spacing:-.03em;}
+.sum-macro-val.g{color:#4ade80;}
+.sum-macro-label{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-top:3px;}
+.sum-progress{margin-top:16px;}
+.sum-prog-row{display:flex;justify-content:space-between;font-size:11px;font-weight:600;margin-bottom:6px;}
+.sum-prog-label{color:#94a3b8;}
+.sum-prog-val{color:#4ade80;}
+.prog-track{height:6px;background:rgba(255,255,255,.08);border-radius:50px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--g),#4ade80);border-radius:50px;transition:width .4s cubic-bezier(.16,1,.3,1);}
+
+/* Meal picker search */
+.picker-head{padding:20px 20px 0;}
+.picker-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;}
+.search-input-wrap{position:relative;margin-bottom:12px;}
+.search-input{
+  width:100%;padding:10px 14px 10px 38px;
+  border:1px solid var(--border);border-radius:var(--r12);
+  font-family:'Inter',sans-serif;font-size:13px;color:var(--text);
+  background:var(--bg);outline:none;transition:border-color .18s;
+}
+.search-input:focus{border-color:var(--g);}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--muted);fill:none;stroke-width:2;}
+.filter-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.fc{
+  font-size:11px;font-weight:700;
+  padding:5px 12px;border-radius:50px;
+  border:1px solid var(--border);background:white;
+  color:var(--muted);cursor:pointer;transition:all .17s;
+}
+.fc.active,.fc:hover{background:var(--g);color:white;border-color:var(--g);}
+
+/* Picker meal list */
+.picker-list{
+  max-height:420px;overflow-y:auto;padding:0 20px 20px;
+}
+.picker-list::-webkit-scrollbar{width:4px;}
+.picker-list::-webkit-scrollbar-track{background:transparent;}
+.picker-list::-webkit-scrollbar-thumb{background:var(--gm);border-radius:4px;}
+
+.picker-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 0;border-bottom:1px solid var(--border);
+  cursor:grab;transition:background .15s;
+  border-radius:var(--r8);
+}
+.picker-item:last-child{border-bottom:none;}
+.picker-item:hover{background:var(--bg);padding:10px 8px;margin:0 -8px;}
+.picker-item:active{cursor:grabbing;}
+.pi-img{
+  width:52px;height:52px;border-radius:var(--r12);
+  overflow:hidden;flex-shrink:0;border:1px solid var(--border);
+}
+.pi-img img{width:100%;height:100%;object-fit:cover;}
+.pi-info{flex:1;min-width:0;}
+.pi-name{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pi-macros{display:flex;gap:8px;margin-top:3px;}
+.pi-mac{font-size:10px;font-weight:600;color:var(--muted);}
+.pi-mac span{color:var(--g);font-weight:800;}
+.pi-badge{
+  font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  padding:2px 7px;border-radius:4px;
+}
+.pib-g{background:var(--gp);color:var(--gd);}
+.pib-a{background:#fffbeb;color:#b45309;}
+.pib-d{background:#f1f5f9;color:#64748b;}
+.pi-drag{flex-shrink:0;}
+.pi-drag svg{width:14px;height:14px;stroke:#cbd5e1;fill:none;stroke-width:2;}
+
+/* Checkout panel footer */
+.panel-footer{
+  padding:20px;
+  border-top:1px solid var(--border);
+  background:var(--bg);
+}
+.checkout-summary{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.cs-label{font-size:12px;color:var(--muted);font-weight:500;}
+.cs-val{font-size:22px;font-weight:900;letter-spacing:-.02em;}
+.price-note{font-size:10.5px;color:var(--muted);margin-top:1px;}
+.checkout-btn-main{
+  width:100%;background:var(--g);color:white;
+  border:none;border-radius:var(--r16);
+  font-size:15px;font-weight:800;padding:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:background .18s,transform .15s,box-shadow .18s;
+  box-shadow:0 4px 16px rgba(34,197,94,.3);
+}
+.checkout-btn-main:hover{background:var(--gd);transform:translateY(-1px);box-shadow:0 8px 24px rgba(34,197,94,.35);}
+.checkout-btn-main:active{transform:scale(.97);}
+.checkout-btn-main svg{width:17px;height:17px;fill:none;stroke:white;stroke-width:2.2;}
+.plan-perks{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+.perk{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--muted);}
+.perk svg{width:12px;height:12px;stroke:var(--g);fill:none;stroke-width:2.5;flex-shrink:0;}
+
+/* ══════════════════════════════════════════
+   MOBILE BOTTOM BAR
+══════════════════════════════════════════ */
+.mobile-bar{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(16px);
+  border-top:1px solid var(--border);
+  padding:14px 20px 24px;
+}
+@media(max-width:768px){
+  .mobile-bar{display:block;}
+  .nav-links{display:none;}
+  .page-body{grid-template-columns:1fr;padding:24px 16px 140px;}
+  .day-meals{grid-template-columns:1fr 1fr!important;}
+  .day-macros-summary{display:none;}
+  .page-header{padding:48px 20px 0;}
+  .day-tab{padding:14px 18px;font-size:13px;}
+  .plan-controls{flex-direction:column;align-items:flex-start;}
+}
+.mobile-bar-inner{display:flex;align-items:center;gap:12px;}
+.mob-summary{flex:1;}
+.mob-meals-count{font-size:14px;font-weight:800;}
+.mob-kcal{font-size:12px;color:var(--muted);}
+.mob-cta{
+  background:var(--g);color:white;border:none;
+  border-radius:var(--r12);font-size:14px;font-weight:700;
+  padding:12px 22px;cursor:pointer;
+  transition:background .18s;white-space:nowrap;
+}
+.mob-cta:hover{background:var(--gd);}
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:999;
+  background:var(--dark);color:white;border-radius:var(--r16);
+  padding:14px 20px;font-size:13px;font-weight:500;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 16px 40px rgba(0,0,0,.2);
+  transform:translateY(20px);opacity:0;
+  transition:all .35s cubic-bezier(.16,1,.3,1);
+  pointer-events:none;max-width:320px;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast svg{width:16px;height:16px;fill:none;stroke:var(--g);stroke-width:2.5;flex-shrink:0;}
+
+/* ══════════════════════════════════════════
+   FADE ANIMATIONS
+══════════════════════════════════════════ */
+.fade-up{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);}
+.fade-up.visible{opacity:1;transform:none;}
+.fd1{transition-delay:.05s;}.fd2{transition-delay:.1s;}.fd3{transition-delay:.15s;}.fd4{transition-delay:.2s;}.fd5{transition-delay:.25s;}.fd6{transition-delay:.3s;}.fd7{transition-delay:.35s;}
+
+/* ══════════════════════════════════════════
+   SECTION HEADINGS (shared)
+══════════════════════════════════════════ */
+.stag{font-size:11px;font-weight:800;color:var(--g);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;}
+</style>
+</head>
+<body>
+
+<!-- ════════════ NAVBAR ════════════ -->
+<nav id="nav">
+  <div class="nav-w">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      Fuel<em>Multan</em>
+    </a>
+    <div class="nav-links">
+      <a href="meals.html">Meal Plans</a>
+      <a href="plan.html" class="active">Weekly Plan</a>
+      <a href="#">How It Works</a>
+      <a href="#">Pricing</a>
+    </div>
+    <div class="nav-r">
+      <button class="btn-ghost">Login</button>
+      <button class="btn-cta" onclick="location.href='fuelmultan.html'">Checkout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════ PAGE HEADER ════════════ -->
+<div class="page-header">
+  <div class="ph-inner">
+    <div class="ph-tag"><span class="ph-dot"></span>Build Your Week</div>
+    <h1 class="ph-h1">Your <em>Weekly</em> Meal Plan</h1>
+    <p class="ph-sub">Choose a 5, 6, or 7-day plan. Assign meals to each day — we handle the rest. Delivered fresh every week.</p>
+  </div>
+  <!-- Day tabs -->
+  <div class="day-tabs-wrap" style="max-width:1280px;margin:0 auto;padding:0 32px;">
+    <button class="day-tab active" data-day="0">Mon <span class="tab-badge" id="tb-0">0</span></button>
+    <button class="day-tab" data-day="1">Tue <span class="tab-badge" id="tb-1">0</span></button>
+    <button class="day-tab" data-day="2">Wed <span class="tab-badge" id="tb-2">0</span></button>
+    <button class="day-tab" data-day="3">Thu <span class="tab-badge" id="tb-3">0</span></button>
+    <button class="day-tab" data-day="4">Fri <span class="tab-badge" id="tb-4">0</span></button>
+    <button class="day-tab" id="day-tab-5" data-day="5">Sat <span class="tab-badge" id="tb-5">0</span></button>
+    <button class="day-tab" id="day-tab-6" data-day="6">Sun <span class="tab-badge" id="tb-6">0</span></button>
+  </div>
+</div>
+
+<!-- ════════════ PAGE BODY ════════════ -->
+<div class="page-body">
+
+  <!-- ── LEFT: Week Grid ── -->
+  <div>
+    <!-- Controls -->
+    <div class="plan-controls fade-up">
+      <div class="duration-toggle">
+        <button class="dur-btn" data-dur="5" onclick="setDuration(5,this)">
+          <span class="dur-label">5 Days</span>
+          <span class="dur-sub">Weekdays only</span>
+        </button>
+        <button class="dur-btn active" data-dur="6" onclick="setDuration(6,this)">
+          <span class="dur-label">6 Days</span>
+          <span class="dur-sub">Most popular</span>
+        </button>
+        <button class="dur-btn" data-dur="7" onclick="setDuration(7,this)">
+          <span class="dur-label">7 Days</span>
+          <span class="dur-sub">Full week</span>
+        </button>
+      </div>
+      <div class="plan-info-row">
+        <span class="pill-info">📦 <strong id="meals-filled">0</strong> / <strong id="meals-total">18</strong> meals filled</span>
+        <span class="pill-info">🔥 <strong id="total-kcal">0</strong> kcal this week</span>
+      </div>
+    </div>
+
+    <!-- Week rows -->
+    <div class="week-grid" id="week-grid">
+
+      <!-- DAY 0: Monday -->
+      <div class="day-row open fade-up fd1" id="day-0">
+        <div class="day-header" onclick="toggleDay(0)">
+          <div class="day-header-left">
+            <div class="day-num">M</div>
+            <div class="day-name-wrap">
+              <div class="day-name">Monday</div>
+              <div class="day-date" id="date-0">Jun 16</div>
+            </div>
+          </div>
+          <div class="day-macros-summary" id="dms-0">
+            <div class="dms-item"><div class="dms-val kcal" id="d-kcal-0">—</div><div class="dms-label">kcal</div></div>
+            <div class="dms-item"><div class="dms-val" id="d-prot-0">—</div><div class="dms-label">Prot</div></div>
+            <div class="dms-item"><div class="dms-val" id="d-carb-0">—</div><div class="dms-label">Carbs</div></div>
+          </div>
+          <div class="day-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="day-meals" id="meals-0" style="display:grid;">
+          <div class="meal-slot" id="slot-0-0" ondragover="onDragOver(event,'0-0')" ondragleave="onDragLeave('0-0')" ondrop="onDrop(event,'0-0')"><div class="slot-empty" onclick="openPicker('0-0','Breakfast')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Breakfast</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-0-1" ondragover="onDragOver(event,'0-1')" ondragleave="onDragLeave('0-1')" ondrop="onDrop(event,'0-1')"><div class="slot-empty" onclick="openPicker('0-1','Lunch')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Lunch</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-0-2" ondragover="onDragOver(event,'0-2')" ondragleave="onDragLeave('0-2')" ondrop="onDrop(event,'0-2')"><div class="slot-empty" onclick="openPicker('0-2','Dinner')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Dinner</span><span class="slot-hint">Click or drag a meal</span></div></div>
+        </div>
+      </div>
+
+      <!-- DAY 1: Tuesday -->
+      <div class="day-row fade-up fd2" id="day-1">
+        <div class="day-header" onclick="toggleDay(1)">
+          <div class="day-header-left">
+            <div class="day-num">T</div>
+            <div class="day-name-wrap"><div class="day-name">Tuesday</div><div class="day-date" id="date-1">Jun 17</div></div>
+          </div>
+          <div class="day-macros-summary"><div class="dms-item"><div class="dms-val kcal" id="d-kcal-1">—</div><div class="dms-label">kcal</div></div><div class="dms-item"><div class="dms-val" id="d-prot-1">—</div><div class="dms-label">Prot</div></div><div class="dms-item"><div class="dms-val" id="d-carb-1">—</div><div class="dms-label">Carbs</div></div></div>
+          <div class="day-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="day-meals" id="meals-1">
+          <div class="meal-slot" id="slot-1-0" ondragover="onDragOver(event,'1-0')" ondragleave="onDragLeave('1-0')" ondrop="onDrop(event,'1-0')"><div class="slot-empty" onclick="openPicker('1-0','Breakfast')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Breakfast</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-1-1" ondragover="onDragOver(event,'1-1')" ondragleave="onDragLeave('1-1')" ondrop="onDrop(event,'1-1')"><div class="slot-empty" onclick="openPicker('1-1','Lunch')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Lunch</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-1-2" ondragover="onDragOver(event,'1-2')" ondragleave="onDragLeave('1-2')" ondrop="onDrop(event,'1-2')"><div class="slot-empty" onclick="openPicker('1-2','Dinner')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Dinner</span><span class="slot-hint">Click or drag a meal</span></div></div>
+        </div>
+      </div>
+
+      <!-- DAY 2: Wednesday -->
+      <div class="day-row fade-up fd3" id="day-2">
+        <div class="day-header" onclick="toggleDay(2)">
+          <div class="day-header-left">
+            <div class="day-num">W</div>
+            <div class="day-name-wrap"><div class="day-name">Wednesday</div><div class="day-date" id="date-2">Jun 18</div></div>
+          </div>
+          <div class="day-macros-summary"><div class="dms-item"><div class="dms-val kcal" id="d-kcal-2">—</div><div class="dms-label">kcal</div></div><div class="dms-item"><div class="dms-val" id="d-prot-2">—</div><div class="dms-label">Prot</div></div><div class="dms-item"><div class="dms-val" id="d-carb-2">—</div><div class="dms-label">Carbs</div></div></div>
+          <div class="day-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="day-meals" id="meals-2">
+          <div class="meal-slot" id="slot-2-0" ondragover="onDragOver(event,'2-0')" ondragleave="onDragLeave('2-0')" ondrop="onDrop(event,'2-0')"><div class="slot-empty" onclick="openPicker('2-0','Breakfast')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Breakfast</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-2-1" ondragover="onDragOver(event,'2-1')" ondragleave="onDragLeave('2-1')" ondrop="onDrop(event,'2-1')"><div class="slot-empty" onclick="openPicker('2-1','Lunch')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Lunch</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-2-2" ondragover="onDragOver(event,'2-2')" ondragleave="onDragLeave('2-2')" ondrop="onDrop(event,'2-2')"><div class="slot-empty" onclick="openPicker('2-2','Dinner')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Dinner</span><span class="slot-hint">Click or drag a meal</span></div></div>
+        </div>
+      </div>
+
+      <!-- DAY 3: Thursday -->
+      <div class="day-row fade-up fd4" id="day-3">
+        <div class="day-header" onclick="toggleDay(3)">
+          <div class="day-header-left">
+            <div class="day-num">T</div>
+            <div class="day-name-wrap"><div class="day-name">Thursday</div><div class="day-date" id="date-3">Jun 19</div></div>
+          </div>
+          <div class="day-macros-summary"><div class="dms-item"><div class="dms-val kcal" id="d-kcal-3">—</div><div class="dms-label">kcal</div></div><div class="dms-item"><div class="dms-val" id="d-prot-3">—</div><div class="dms-label">Prot</div></div><div class="dms-item"><div class="dms-val" id="d-carb-3">—</div><div class="dms-label">Carbs</div></div></div>
+          <div class="day-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="day-meals" id="meals-3">
+          <div class="meal-slot" id="slot-3-0" ondragover="onDragOver(event,'3-0')" ondragleave="onDragLeave('3-0')" ondrop="onDrop(event,'3-0')"><div class="slot-empty" onclick="openPicker('3-0','Breakfast')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Breakfast</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-3-1" ondragover="onDragOver(event,'3-1')" ondragleave="onDragLeave('3-1')" ondrop="onDrop(event,'3-1')"><div class="slot-empty" onclick="openPicker('3-1','Lunch')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Lunch</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-3-2" ondragover="onDragOver(event,'3-2')" ondragleave="onDragLeave('3-2')" ondrop="onDrop(event,'3-2')"><div class="slot-empty" onclick="openPicker('3-2','Dinner')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Dinner</span><span class="slot-hint">Click or drag a meal</span></div></div>
+        </div>
+      </div>
+
+      <!-- DAY 4: Friday -->
+      <div class="day-row fade-up fd5" id="day-4">
+        <div class="day-header" onclick="toggleDay(4)">
+          <div class="day-header-left">
+            <div class="day-num">F</div>
+            <div class="day-name-wrap"><div class="day-name">Friday</div><div class="day-date" id="date-4">Jun 20</div></div>
+          </div>
+          <div class="day-macros-summary"><div class="dms-item"><div class="dms-val kcal" id="d-kcal-4">—</div><div class="dms-label">kcal</div></div><div class="dms-item"><div class="dms-val" id="d-prot-4">—</div><div class="dms-label">Prot</div></div><div class="dms-item"><div class="dms-val" id="d-carb-4">—</div><div class="dms-label">Carbs</div></div></div>
+          <div class="day-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="day-meals" id="meals-4">
+          <div class="meal-slot" id="slot-4-0" ondragover="onDragOver(event,'4-0')" ondragleave="onDragLeave('4-0')" ondrop="onDrop(event,'4-0')"><div class="slot-empty" onclick="openPicker('4-0','Breakfast')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Breakfast</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-4-1" ondragover="onDragOver(event,'4-1')" ondragleave="onDragLeave('4-1')" ondrop="onDrop(event,'4-1')"><div class="slot-empty" onclick="openPicker('4-1','Lunch')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Lunch</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-4-2" ondragover="onDragOver(event,'4-2')" ondragleave="onDragLeave('4-2')" ondrop="onDrop(event,'4-2')"><div class="slot-empty" onclick="openPicker('4-2','Dinner')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Dinner</span><span class="slot-hint">Click or drag a meal</span></div></div>
+        </div>
+      </div>
+
+      <!-- DAY 5: Saturday -->
+      <div class="day-row fade-up fd6" id="day-5">
+        <div class="day-header" onclick="toggleDay(5)">
+          <div class="day-header-left">
+            <div class="day-num">S</div>
+            <div class="day-name-wrap"><div class="day-name">Saturday</div><div class="day-date" id="date-5">Jun 21</div></div>
+          </div>
+          <div class="day-macros-summary"><div class="dms-item"><div class="dms-val kcal" id="d-kcal-5">—</div><div class="dms-label">kcal</div></div><div class="dms-item"><div class="dms-val" id="d-prot-5">—</div><div class="dms-label">Prot</div></div><div class="dms-item"><div class="dms-val" id="d-carb-5">—</div><div class="dms-label">Carbs</div></div></div>
+          <div class="day-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="day-meals" id="meals-5">
+          <div class="meal-slot" id="slot-5-0" ondragover="onDragOver(event,'5-0')" ondragleave="onDragLeave('5-0')" ondrop="onDrop(event,'5-0')"><div class="slot-empty" onclick="openPicker('5-0','Breakfast')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Breakfast</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-5-1" ondragover="onDragOver(event,'5-1')" ondragleave="onDragLeave('5-1')" ondrop="onDrop(event,'5-1')"><div class="slot-empty" onclick="openPicker('5-1','Lunch')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Lunch</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-5-2" ondragover="onDragOver(event,'5-2')" ondragleave="onDragLeave('5-2')" ondrop="onDrop(event,'5-2')"><div class="slot-empty" onclick="openPicker('5-2','Dinner')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Dinner</span><span class="slot-hint">Click or drag a meal</span></div></div>
+        </div>
+      </div>
+
+      <!-- DAY 6: Sunday (hidden by default — 6 days active) -->
+      <div class="day-row fade-up fd7" id="day-6" style="display:none;">
+        <div class="day-header" onclick="toggleDay(6)">
+          <div class="day-header-left">
+            <div class="day-num" style="background:#f1f5f9;border-color:#e2e8f0;color:#94a3b8;">S</div>
+            <div class="day-name-wrap"><div class="day-name">Sunday</div><div class="day-date" id="date-6">Jun 22</div></div>
+          </div>
+          <div class="day-macros-summary"><div class="dms-item"><div class="dms-val kcal" id="d-kcal-6">—</div><div class="dms-label">kcal</div></div><div class="dms-item"><div class="dms-val" id="d-prot-6">—</div><div class="dms-label">Prot</div></div><div class="dms-item"><div class="dms-val" id="d-carb-6">—</div><div class="dms-label">Carbs</div></div></div>
+          <div class="day-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="day-meals" id="meals-6">
+          <div class="meal-slot" id="slot-6-0" ondragover="onDragOver(event,'6-0')" ondragleave="onDragLeave('6-0')" ondrop="onDrop(event,'6-0')"><div class="slot-empty" onclick="openPicker('6-0','Breakfast')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Breakfast</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-6-1" ondragover="onDragOver(event,'6-1')" ondragleave="onDragLeave('6-1')" ondrop="onDrop(event,'6-1')"><div class="slot-empty" onclick="openPicker('6-1','Lunch')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Lunch</span><span class="slot-hint">Click or drag a meal</span></div></div>
+          <div class="meal-slot" id="slot-6-2" ondragover="onDragOver(event,'6-2')" ondragleave="onDragLeave('6-2')" ondrop="onDrop(event,'6-2')"><div class="slot-empty" onclick="openPicker('6-2','Dinner')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">Dinner</span><span class="slot-hint">Click or drag a meal</span></div></div>
+        </div>
+      </div>
+
+    </div><!-- /week-grid -->
+  </div>
+
+  <!-- ── RIGHT: Sidebar Panel ── -->
+  <aside class="sidebar-panel fade-up fd2">
+    <div class="panel-card">
+
+      <!-- Weekly summary -->
+      <div class="summary-head">
+        <div class="sum-title">Weekly Summary</div>
+        <div class="sum-macros">
+          <div class="sum-macro">
+            <div class="sum-macro-val g" id="sum-kcal">0</div>
+            <div class="sum-macro-label">Total kcal</div>
+          </div>
+          <div class="sum-macro">
+            <div class="sum-macro-val" id="sum-prot">0g</div>
+            <div class="sum-macro-label">Avg Protein</div>
+          </div>
+          <div class="sum-macro">
+            <div class="sum-macro-val" id="sum-carb">0g</div>
+            <div class="sum-macro-label">Avg Carbs</div>
+          </div>
+          <div class="sum-macro">
+            <div class="sum-macro-val" id="sum-fat">0g</div>
+            <div class="sum-macro-label">Avg Fats</div>
+          </div>
+        </div>
+        <div class="sum-progress" style="margin-top:18px;">
+          <div class="sum-prog-row">
+            <span class="sum-prog-label">Plan completion</span>
+            <span class="sum-prog-val" id="prog-pct">0%</span>
+          </div>
+          <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <!-- Meal picker -->
+      <div class="picker-head">
+        <div class="picker-title">Meal Library</div>
+        <div class="search-input-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input class="search-input" id="search-input" placeholder="Search meals…" oninput="filterMeals()" />
+        </div>
+        <div class="filter-chips">
+          <button class="fc active" data-cat="all" onclick="setFilter('all',this)">All</button>
+          <button class="fc" data-cat="keto" onclick="setFilter('keto',this)">Keto</button>
+          <button class="fc" data-cat="lean" onclick="setFilter('lean',this)">Lean</button>
+          <button class="fc" data-cat="bulk" onclick="setFilter('bulk',this)">Bulk</button>
+          <button class="fc" data-cat="vegan" onclick="setFilter('vegan',this)">Vegan</button>
+        </div>
+      </div>
+
+      <div class="picker-list" id="picker-list">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Footer -->
+      <div class="panel-footer">
+        <div class="checkout-summary">
+          <div>
+            <div class="cs-label">Weekly total</div>
+            <div class="cs-val">$<span id="plan-price">0.00</span></div>
+            <div class="price-note"><span id="meals-count-footer">0</span> meals · free delivery included</div>
+          </div>
+        </div>
+        <button class="checkout-btn-main" onclick="location.href='fuelmultan.html'">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Confirm My Plan
+        </button>
+        <div class="plan-perks">
+          <span class="perk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>No commitment</span>
+          <span class="perk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pause anytime</span>
+          <span class="perk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Fresh delivery</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+</div><!-- /page-body -->
+
+<!-- Mobile sticky bar -->
+<div class="mobile-bar">
+  <div class="mobile-bar-inner">
+    <div class="mob-summary">
+      <div class="mob-meals-count"><span id="mob-count">0</span> meals added</div>
+      <div class="mob-kcal" id="mob-kcal">0 kcal this week</div>
+    </div>
+    <button class="mob-cta" onclick="location.href='fuelmultan.html'">Confirm Plan →</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-txt">Meal added!</span>
+</div>
+
+<!-- Meal Picker Modal -->
+<div id="picker-modal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(11,15,25,.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:white;border-radius:24px;width:100%;max-width:540px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 32px 80px rgba(0,0,0,.25);">
+    <div style="padding:24px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.08em;" id="modal-slot-label">Breakfast</div>
+        <div style="font-size:18px;font-weight:800;margin-top:2px;">Pick a meal</div>
+      </div>
+      <button onclick="closeModal()" style="width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--muted);">×</button>
+    </div>
+    <div style="padding:16px 24px;border-bottom:1px solid var(--border);">
+      <div style="position:relative;">
+        <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--muted);fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input id="modal-search" style="width:100%;padding:10px 14px 10px 38px;border:1px solid var(--border);border-radius:var(--r12);font-family:'Inter',sans-serif;font-size:13px;outline:none;" placeholder="Search meals…" oninput="filterModal()"/>
+      </div>
+    </div>
+    <div id="modal-list" style="overflow-y:auto;padding:12px 16px;flex:1;"></div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════
+   MEAL DATA
+════════════════════════════════════════ */
+const MEALS = [
+  {id:1,name:"Teriyaki Glazed Salmon",cat:"lean",kcal:480,prot:38,carb:42,fat:12,price:13.99,img:"https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=300&auto=format&fit=crop&q=70",badge:"lean"},
+  {id:2,name:"Chili Lime Chicken",cat:"keto",kcal:420,prot:45,carb:8,fat:14,price:12.49,img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&auto=format&fit=crop&q=70",badge:"keto"},
+  {id:3,name:"Turkey Superbowl",cat:"lean",kcal:390,prot:35,carb:30,fat:8,price:11.99,img:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300&auto=format&fit=crop&q=70",badge:"lean"},
+  {id:4,name:"Vegan Power Bowl",cat:"vegan",kcal:410,prot:28,carb:55,fat:16,price:11.50,img:"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&auto=format&fit=crop&q=70",badge:"vegan"},
+  {id:5,name:"Garlic Beef Stir Fry",cat:"bulk",kcal:590,prot:52,carb:44,fat:18,price:14.99,img:"https://images.unsplash.com/photo-1547592180-85f173990554?w=300&auto=format&fit=crop&q=70",badge:"bulk"},
+  {id:6,name:"Lemon Herb Chicken",cat:"lean",kcal:480,prot:42,carb:12,fat:28,price:12.99,img:"https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=300&auto=format&fit=crop&q=70",badge:"lean"},
+  {id:7,name:"Egg White Omelette",cat:"keto",kcal:290,prot:34,carb:5,fat:12,price:9.99,img:"https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=300&auto=format&fit=crop&q=70",badge:"keto"},
+  {id:8,name:"Quinoa Buddha Bowl",cat:"vegan",kcal:440,prot:22,carb:65,fat:14,price:11.50,img:"https://images.unsplash.com/photo-1540914124281-342587941389?w=300&auto=format&fit=crop&q=70",badge:"vegan"},
+  {id:9,name:"Pesto Salmon Fillet",cat:"lean",kcal:510,prot:45,carb:8,fat:30,price:15.99,img:"https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=300&auto=format&fit=crop&q=70",badge:"lean"},
+  {id:10,name:"Beef & Broccoli Bowl",cat:"bulk",kcal:620,prot:54,carb:38,fat:20,price:14.49,img:"https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=300&auto=format&fit=crop&q=70",badge:"bulk"},
+  {id:11,name:"Greek Chicken Wrap",cat:"lean",kcal:450,prot:40,carb:32,fat:10,price:12.49,img:"https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300&auto=format&fit=crop&q=70",badge:"lean"},
+  {id:12,name:"Spicy Turkey Chili",cat:"lean",kcal:420,prot:48,carb:32,fat:10,price:11.99,img:"https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&auto=format&fit=crop&q=70",badge:"lean"},
+];
+
+/* ════════════════════════════════════════
+   STATE
+════════════════════════════════════════ */
+let duration = 6;
+let activeCat = 'all';
+let dragMealId = null;
+let pendingSlot = null;
+// slots[dayIndex][slotIndex] = mealId or null
+const slots = Array.from({length:7},()=>[null,null,null]);
+
+/* ════════════════════════════════════════
+   INIT
+════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded',()=>{
+  setDuration(6, document.querySelector('[data-dur="6"]'));
+  renderPickerList();
+  setupDates();
+  // Scroll observer
+  const io = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+});
+
+function setupDates(){
+  const days=['Jun 16','Jun 17','Jun 18','Jun 19','Jun 20','Jun 21','Jun 22'];
+  days.forEach((d,i)=>{ const el=document.getElementById('date-'+i); if(el) el.textContent=d; });
+}
+
+/* ════════════════════════════════════════
+   DURATION
+════════════════════════════════════════ */
+function setDuration(d, btn){
+  duration=d;
+  document.querySelectorAll('.dur-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  // Show/hide day rows
+  document.getElementById('day-5').style.display = d>=6 ? '' : 'none';
+  document.getElementById('day-6').style.display = d>=7 ? '' : 'none';
+  document.getElementById('day-tab-5').style.display = d>=6 ? '' : 'none';
+  document.getElementById('day-tab-6').style.display = d>=7 ? '' : 'none';
+  document.getElementById('meals-total').textContent = d*3;
+  updateSummary();
+}
+
+/* ════════════════════════════════════════
+   TOGGLE DAY ACCORDION
+════════════════════════════════════════ */
+function toggleDay(i){
+  const row = document.getElementById('day-'+i);
+  const meals = document.getElementById('meals-'+i);
+  const isOpen = row.classList.contains('open');
+  row.classList.toggle('open',!isOpen);
+  meals.style.display = isOpen ? 'none' : 'grid';
+}
+
+/* ════════════════════════════════════════
+   PICKER LIST (sidebar)
+════════════════════════════════════════ */
+function renderPickerList(){
+  const q = (document.getElementById('search-input')?.value||'').toLowerCase();
+  const list = document.getElementById('picker-list');
+  const filtered = MEALS.filter(m=>(activeCat==='all'||m.cat===activeCat)&&m.name.toLowerCase().includes(q));
+  list.innerHTML = filtered.map(m=>`
+    <div class="picker-item" draggable="true" ondragstart="onDragStart(event,${m.id})" title="Drag to a day slot">
+      <div class="pi-img"><img src="${m.img}" alt="${m.name}" loading="lazy"/></div>
+      <div class="pi-info">
+        <div class="pi-name">${m.name}</div>
+        <div class="pi-macros">
+          <span class="pi-mac"><span>${m.prot}g</span> P</span>
+          <span class="pi-mac"><span>${m.carb}g</span> C</span>
+          <span class="pi-mac"><span>${m.kcal}</span> kcal</span>
+        </div>
+      </div>
+      <span class="pi-badge ${m.cat==='keto'?'pib-a':m.cat==='vegan'?'pib-g':'pib-d'}">${m.badge}</span>
+      <div class="pi-drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="6" r="1" fill="#cbd5e1"/><circle cx="15" cy="6" r="1" fill="#cbd5e1"/><circle cx="9" cy="12" r="1" fill="#cbd5e1"/><circle cx="15" cy="12" r="1" fill="#cbd5e1"/><circle cx="9" cy="18" r="1" fill="#cbd5e1"/><circle cx="15" cy="18" r="1" fill="#cbd5e1"/></svg></div>
+    </div>
+  `).join('');
+}
+
+function filterMeals(){ renderPickerList(); }
+
+function setFilter(cat, btn){
+  activeCat=cat;
+  document.querySelectorAll('.fc').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPickerList();
+}
+
+/* ════════════════════════════════════════
+   DRAG & DROP
+════════════════════════════════════════ */
+function onDragStart(e, mealId){
+  dragMealId = mealId;
+  e.dataTransfer.effectAllowed='copy';
+  e.dataTransfer.setData('text/plain', mealId);
+}
+
+function onDragOver(e, slotKey){
+  e.preventDefault();
+  e.dataTransfer.dropEffect='copy';
+  document.getElementById('slot-'+slotKey).classList.add('dragging-over');
+}
+
+function onDragLeave(slotKey){
+  document.getElementById('slot-'+slotKey).classList.remove('dragging-over');
+}
+
+function onDrop(e, slotKey){
+  e.preventDefault();
+  const mealId = parseInt(e.dataTransfer.getData('text/plain')||dragMealId);
+  document.getElementById('slot-'+slotKey).classList.remove('dragging-over');
+  assignMeal(slotKey, mealId);
+}
+
+/* ════════════════════════════════════════
+   MODAL PICKER (click to assign)
+════════════════════════════════════════ */
+function openPicker(slotKey, type){
+  pendingSlot = slotKey;
+  document.getElementById('modal-slot-label').textContent = type;
+  renderModalList('');
+  const modal = document.getElementById('picker-modal');
+  modal.style.display='flex';
+  document.getElementById('modal-search').value='';
+  document.getElementById('modal-search').focus();
+}
+
+function closeModal(){
+  document.getElementById('picker-modal').style.display='none';
+  pendingSlot=null;
+}
+
+document.getElementById('picker-modal').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
+
+function filterModal(){
+  renderModalList(document.getElementById('modal-search').value.toLowerCase());
+}
+
+function renderModalList(q){
+  const container = document.getElementById('modal-list');
+  const filtered = MEALS.filter(m=>m.name.toLowerCase().includes(q));
+  container.innerHTML = filtered.map(m=>`
+    <div onclick="pickMeal(${m.id})" style="display:flex;align-items:center;gap:14px;padding:12px;border-radius:14px;cursor:pointer;transition:background .15s;border-bottom:1px solid #f1f5f9;hover:background:#f8fafc;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+      <div style="width:60px;height:60px;border-radius:12px;overflow:hidden;flex-shrink:0;"><img src="${m.img}" style="width:100%;height:100%;object-fit:cover;" loading="lazy"/></div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">${m.name}</div>
+        <div style="display:flex;gap:10px;font-size:11.5px;color:#64748b;">
+          <span><strong style="color:#22c55e;">${m.prot}g</strong> protein</span>
+          <span><strong>${m.kcal}</strong> kcal</span>
+          <span style="color:#22c55e;font-weight:700;">$${m.price}</span>
+        </div>
+      </div>
+      <div style="width:32px;height:32px;border-radius:50%;background:#f0fdf4;border:1.5px solid #dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;color:#22c55e;">+</div>
+    </div>
+  `).join('');
+}
+
+function pickMeal(mealId){
+  if(!pendingSlot) return;
+  assignMeal(pendingSlot, mealId);
+  closeModal();
+}
+
+/* ════════════════════════════════════════
+   ASSIGN MEAL TO SLOT
+════════════════════════════════════════ */
+function assignMeal(slotKey, mealId){
+  const [di,si] = slotKey.split('-').map(Number);
+  const meal = MEALS.find(m=>m.id===mealId);
+  if(!meal) return;
+  slots[di][si] = mealId;
+  renderSlot(di, si, meal);
+  updateSummary();
+  showToast(`${meal.name} added to ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di]}!`);
+}
+
+function removeMeal(di, si){
+  slots[di][si]=null;
+  const slotEl = document.getElementById(`slot-${di}-${si}`);
+  const types=['Breakfast','Lunch','Dinner'];
+  slotEl.className='meal-slot';
+  slotEl.innerHTML=`<div class="slot-empty" onclick="openPicker('${di}-${si}','${types[si]}')"><div class="slot-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><span class="slot-type">${types[si]}</span><span class="slot-hint">Click or drag a meal</span></div>`;
+  slotEl.setAttribute('ondragover',`onDragOver(event,'${di}-${si}')`);
+  slotEl.setAttribute('ondragleave',`onDragLeave('${di}-${si}')`);
+  slotEl.setAttribute('ondrop',`onDrop(event,'${di}-${si}')`);
+  updateSummary();
+}
+
+function renderSlot(di, si, meal){
+  const slotEl = document.getElementById(`slot-${di}-${si}`);
+  const types=['Breakfast','Lunch','Dinner'];
+  slotEl.className='meal-slot filled';
+  slotEl.innerHTML=`
+    <div class="slot-filled">
+      <div class="slot-img"><img src="${meal.img}" alt="${meal.name}" loading="lazy"/></div>
+      <button class="slot-remove" onclick="removeMeal(${di},${si})"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      <div class="slot-body">
+        <div class="slot-meal-type">${types[si]}</div>
+        <div class="slot-meal-name">${meal.name}</div>
+        <div class="slot-macros">
+          <span class="sm"><span>${meal.prot}g</span> P</span>
+          <span class="sm" style="margin-left:6px;"><span>${meal.kcal}</span> kcal</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ════════════════════════════════════════
+   SUMMARY UPDATE
+════════════════════════════════════════ */
+function updateSummary(){
+  let totalKcal=0,totalProt=0,totalCarb=0,totalFat=0,totalPrice=0,filled=0,activeDays=0;
+  for(let d=0;d<duration;d++){
+    let dayKcal=0,dayProt=0,dayCarb=0,dayFilled=0;
+    for(let s=0;s<3;s++){
+      const mId=slots[d][s];
+      if(mId){
+        const m=MEALS.find(x=>x.id===mId);
+        if(m){totalKcal+=m.kcal;totalProt+=m.prot;totalCarb+=m.carb;totalFat+=m.fat;totalPrice+=m.price;filled++;dayKcal+=m.kcal;dayProt+=m.prot;dayCarb+=m.carb;dayFilled++;}
+      }
+    }
+    if(dayFilled>0) activeDays++;
+    // Update day header
+    document.getElementById('d-kcal-'+d).textContent = dayKcal||'—';
+    document.getElementById('d-prot-'+d).textContent = dayProt?dayProt+'g':'—';
+    document.getElementById('d-carb-'+d).textContent = dayCarb?dayCarb+'g':'—';
+    // Tab badge
+    document.getElementById('tb-'+d).textContent = dayFilled;
+  }
+  const mpc = filled>0?(totalProt/filled).toFixed(0):0;
+  const cpc = filled>0?(totalCarb/filled).toFixed(0):0;
+  const fpc = filled>0?(totalFat/filled).toFixed(0):0;
+  document.getElementById('sum-kcal').textContent = totalKcal;
+  document.getElementById('sum-prot').textContent = mpc+'g';
+  document.getElementById('sum-carb').textContent = cpc+'g';
+  document.getElementById('sum-fat').textContent = fpc+'g';
+  const total = duration*3;
+  const pct = Math.round(filled/total*100);
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('prog-pct').textContent = pct+'%';
+  document.getElementById('meals-filled').textContent = filled;
+  document.getElementById('plan-price').textContent = totalPrice.toFixed(2);
+  document.getElementById('meals-count-footer').textContent = filled;
+  document.getElementById('mob-count').textContent = filled;
+  document.getElementById('mob-kcal').textContent = totalKcal+' kcal this week';
+}
+
+/* ════════════════════════════════════════
+   TOAST
+════════════════════════════════════════ */
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-txt').textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+/* ════════════════════════════════════════
+   NAVBAR SCROLL
+════════════════════════════════════════ */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>20));
+
+/* ════════════════════════════════════════
+   DAY TAB CLICK → SCROLL TO DAY
+════════════════════════════════════════ */
+document.querySelectorAll('.day-tab').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.day-tab').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+    const di=parseInt(this.dataset.day);
+    const row=document.getElementById('day-'+di);
+    if(row){row.scrollIntoView({behavior:'smooth',block:'center'});}
+    // open that day
+    if(!row.classList.contains('open')){toggleDay(di);}
+  });
+});
+</script>
+</body>
+</html>

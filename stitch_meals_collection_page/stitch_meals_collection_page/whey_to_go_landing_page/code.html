@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>FuelMultan | Multan's Elite Protein Meal Prep</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#10B981", /* Emerald */
+                        "secondary": "#F59E0B", /* Gold */
+                        "background-light": "#F8FAFC", /* Slate 50 */
+                        "background-dark": "#0F172A", /* Slate 900 */
+                        "slate-900": "#0F172A",
+                        "slate-800": "#1E293B",
+                        "slate-700": "#334155"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.75rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.7);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+    <nav class="sticky top-0 z-50 w-full glass-nav border-b border-slate-200/50 dark:border-slate-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="w-10 h-10 bg-primary flex items-center justify-center rounded-xl shadow-lg shadow-primary/20">
+                        <span class="material-icons text-white">restaurant</span>
+                    </div>
+                    <span class="text-2xl font-extrabold tracking-tight dark:text-white">Fuel<span
+                            class="text-primary italic">Multan</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a class="text-sm font-semibold hover:text-primary transition-colors"
+                        href="../meals_collection_page/code.html">Menu</a>
+                    <a class="text-sm font-semibold hover:text-primary transition-colors" href="#">How It Works</a>
+                    <a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Testimonials</a>
+                    <a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Pricing</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="text-sm font-bold dark:text-white">Login</button>
+                    <a href="../meals_collection_page/code.html"
+                        class="bg-primary hover:bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-primary/10 hover:scale-[1.02]">
+                        Order Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <header class="relative overflow-hidden pt-16 pb-24 lg:pt-24 lg:pb-32 bg-background-light dark:bg-background-dark">
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none opacity-10 dark:opacity-20">
+            <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-primary rounded-full blur-[120px]">
+            </div>
+            <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-secondary rounded-full blur-[150px]">
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="text-center lg:text-left">
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold tracking-wider uppercase mb-8">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                        </span>
+                        #1 Rated in Multan, PK
+                    </div>
+                    <h1
+                        class="text-5xl lg:text-7xl font-extrabold text-slate-900 dark:text-white leading-[1.1] mb-8 tracking-tight">
+                        Eat Clean. <br />Perform <span
+                            class="text-primary underline decoration-secondary/30 decoration-8 underline-offset-8">Better.</span>
+                    </h1>
+                    <p
+                        class="text-xl text-slate-600 dark:text-slate-400 mb-12 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium">
+                        Chef-prepared, macro-calibrated meals delivered fresh to your door in Multan. Fuel your ambition
+                        without the prep work.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
+                        <a href="../meals_collection_page/code.html"
+                            class="bg-primary text-white px-10 py-5 rounded-2xl font-bold text-lg transition-all hover:bg-emerald-600 shadow-xl shadow-primary/25 flex items-center justify-center group">
+                            Start My Plan
+                            <span
+                                class="material-icons ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </a>
+                        <button
+                            class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white px-10 py-5 rounded-2xl font-bold text-lg transition-all hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">play_circle</span>
+                            Watch Tour
+                        </button>
+                    </div>
+                    <div class="mt-12 flex items-center justify-center lg:justify-start gap-8">
+                        <div class="flex -space-x-4">
+                            <img class="w-12 h-12 rounded-full border-4 border-background-light dark:border-background-dark object-cover"
+                                data-alt="Fitness athlete"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-MRHxj-dYKAjQpvfp7fvzu5p7LO6ykNcs8tfgVKOc3o492EHYAVADXghSBDmVyQCyJjYFWNFr51Q5xSO7Q9tMslmvlr9G-v7qodePZRq5bx8bR9-SkTw0qhnZLCfsDp4yymBwb1yhMlMmYVBm9gEoFBLPwuyzXYWPU2sBfaKNfCaQhQkE02GH1ALiuVayn0m7edHKtZRtKMBguL6_gyaG0rpXX8T1grAe8Rlfa5wM9B-iE0nGV1AT_lXnzsh267wMB_fWrAB9o4k" />
+                            <img class="w-12 h-12 rounded-full border-4 border-background-light dark:border-background-dark object-cover"
+                                data-alt="Professional woman"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIYajzv7W2PS_H62pbHRjbYl-cOgCv-2cdjhHwO8L5su5SK-1zLXcJ-3DBFIItaQfKYRiRD7cohwKqvlqtVeDiR_cZCg-9yDn1jIzdxMZzCzeHOHuU6Ep6qkPqfNos6bkr5fJnk_XJRSqnVwGODkmW6e8G4tKVOx1gPB5qun5xf9A74TdYFTHAb3RoL8mYYcy5kDLMJs7-9v0gQPMs7HyLrQpxdVNOw0AgYvHkpqwoAY-Jpa1_L17ZFriCizwalJpJLS8A-7kh1O4" />
+                            <img class="w-12 h-12 rounded-full border-4 border-background-light dark:border-background-dark object-cover"
+                                data-alt="Satisfied customer"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtyr5xKyL5Zmr0DQns3JWmoMR9CTWFg8nD96S3fTWphAOnpDes0XwrB4D9V6g-7pguXOF1ho7LSvnv1Uunht-Ti45S4EisyAHem3R6EIAnSIDoi4dj3oDtDLSKTdBae21xqlyRUTah4QzCptf43lBRKCvVQ3TG8nowLLlCq1-go77mGT_VxmmtnMfWvXOoc2GUuh1V0oQtAvmepgU-qtafiU4lGyRqweEVm8oZeCk5HXjSY2c3vBS7JeHpJrGj6yVmQGVljK1vAPY" />
+                            <div
+                                class="w-12 h-12 rounded-full border-4 border-background-light dark:border-background-dark bg-secondary flex items-center justify-center text-xs font-bold text-white">
+                                +5k</div>
+                        </div>
+                        <p class="text-sm font-medium text-slate-500">Trusted by <span
+                                class="text-slate-900 dark:text-white font-bold">5,000+</span> in Multan</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="relative rounded-3xl overflow-hidden border-12 border-white/10 shadow-2xl tilt-effect">
+                        <img class="w-full h-[650px] object-cover" data-alt="Healthy meal prep in Multan"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-MRHxj-dYKAjQpvfp7fvzu5p7LO6ykNcs8tfgVKOc3o492EHYAVADXghSBDmVyQCyJjYFWNFr51Q5xSO7Q9tMslmvlr9G-v7qodePZRq5bx8bR9-SkTw0qhnZLCfsDp4yymBwb1yhMlMmYVBm9gEoFBLPwuyzXYWPU2sBfaKNfCaQhQkE02GH1ALiuVayn0m7edHKtZRtKMBguL6_gyaG0rpXX8T1grAe8Rlfa5wM9B-iE0nGV1AT_lXnzsh267wMB_fWrAB9o4k" />
+                        <div
+                            class="absolute bottom-8 left-8 right-8 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-8 rounded-2xl border border-white/20 dark:border-slate-800 shadow-2xl">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-primary font-bold tracking-wider uppercase text-xs">Signature Multani
+                                    Bowl</span>
+                                <span
+                                    class="bg-secondary/20 text-secondary text-[10px] font-black px-2 py-1 rounded-full">🔥
+                                    POPULAR</span>
+                            </div>
+                            <h3 class="text-slate-900 dark:text-white font-extrabold text-2xl mb-6">Roasted Chicken &
+                                Zaatar Quinoa</h3>
+                            <div class="grid grid-cols-3 gap-6">
+                                <div class="text-center">
+                                    <div class="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-1">
+                                        Protein</div>
+                                    <div class="text-primary font-bold text-xl">42g</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-1">
+                                        Carbs</div>
+                                    <div class="text-slate-900 dark:text-white font-bold text-xl">38g</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-1">
+                                        Fats</div>
+                                    <div class="text-slate-900 dark:text-white font-bold text-xl">12g</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-12 -right-12 w-48 h-48 bg-primary/20 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-12 -left-12 w-64 h-64 bg-secondary/10 rounded-full blur-3xl"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="py-24 bg-white dark:bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-24">
+                <h2 class="text-4xl lg:text-5xl font-extrabold mb-6 tracking-tight dark:text-white">Fitness Fuel in
+                    <span class="text-primary italic">3 Precise Steps</span>
+                </h2>
+                <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-lg">We've mastered the science of
+                    meal prep so you can master your performance.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-16">
+                <div class="relative group text-center lg:text-left">
+                    <div class="mb-10 relative inline-block">
+                        <div
+                            class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center group-hover:bg-primary transition-all duration-500 group-hover:rotate-6 shadow-xl shadow-primary/5">
+                            <span class="text-primary group-hover:text-white text-4xl font-black">01</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 dark:text-white">Define Your Goal</h3>
+                    <p class="text-slate-500 dark:text-slate-400 leading-relaxed text-base">Select from Bulk, Lean, or
+                        Keto plans tailored specifically to your caloric and macronutrient requirements.</p>
+                    <div class="hidden lg:block absolute top-10 -right-8 text-primary/10">
+                        <span class="material-icons text-5xl">east</span>
+                    </div>
+                </div>
+                <div class="relative group text-center lg:text-left">
+                    <div class="mb-10 relative inline-block">
+                        <div
+                            class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center group-hover:bg-primary transition-all duration-500 group-hover:-rotate-6 shadow-xl shadow-primary/5">
+                            <span class="text-primary group-hover:text-white text-4xl font-black">02</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 dark:text-white">Multani Chef Crafted</h3>
+                    <p class="text-slate-500 dark:text-slate-400 leading-relaxed text-base">Our elite local chefs
+                        prepare every meal using premium, organic ingredients with precise macro-accuracy.</p>
+                    <div class="hidden lg:block absolute top-10 -right-8 text-primary/10">
+                        <span class="material-icons text-5xl">east</span>
+                    </div>
+                </div>
+                <div class="relative group text-center lg:text-left">
+                    <div class="mb-10 relative inline-block">
+                        <div
+                            class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center group-hover:bg-primary transition-all duration-500 group-hover:rotate-6 shadow-xl shadow-primary/5">
+                            <span class="text-primary group-hover:text-white text-4xl font-black">03</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 dark:text-white">Flash Fresh Delivery</h3>
+                    <p class="text-slate-500 dark:text-slate-400 leading-relaxed text-base">Ready-to-eat meals delivered
+                        weekly in temperature-controlled boxes across Multan. Just heat and fuel up.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-24 bg-background-light dark:bg-background-dark overflow-hidden">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 flex flex-col md:flex-row justify-between items-end gap-6">
+            <div>
+                <h2 class="text-4xl font-extrabold tracking-tight dark:text-white">Community <span
+                        class="text-primary italic">Favorites</span></h2>
+                <p class="text-slate-500 dark:text-slate-400 mt-4 text-lg">The most ordered meals by Multan's
+                    top-performing athletes.</p>
+            </div>
+            <div class="flex gap-4">
+                <button
+                    class="w-14 h-14 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-white dark:hover:bg-slate-800 transition-all shadow-sm">
+                    <span class="material-icons">west</span>
+                </button>
+                <button
+                    class="w-14 h-14 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-white dark:hover:bg-slate-800 transition-all shadow-sm">
+                    <span class="material-icons">east</span>
+                </button>
+            </div>
+        </div>
+        <div class="flex overflow-x-auto gap-8 px-4 sm:px-6 lg:px-[calc((100vw-1280px)/2)] hide-scrollbar pb-12">
+            <div
+                class="min-w-[340px] bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 group transition-all hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2">
+                <div class="relative mb-6">
+                    <img class="w-full h-56 object-cover rounded-2xl" data-alt="Emerald Chicken Bowl"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBweUClwgccvHJHALkRs3WCpjDhIoghTbOpq_Nj-E2011bNHivZSt9kDbq0erWq5vCWCCBK6BKeDuEDB62FUFTFRrm3PVrpJdg5jZrf1XbVhPLadcnOP958moncP_CjgMKmat3e36b9epYLOC4Tbj8RybG_q00pkKf7QB2RUcQqyh07om4455JHzPP12oQ3bZFG39fGUallLRc9mle93P3wSe6alKucYYoxUyhhPMo2zeDUuaJtLpbY2otH9ckwv67bJz08TaP-OSE" />
+                    <span
+                        class="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">HIGH
+                        PROTEIN</span>
+                </div>
+                <div class="px-2">
+                    <h4 class="text-2xl font-bold mb-2 dark:text-white">Multani Emerald Chicken</h4>
+                    <p class="text-slate-400 text-sm mb-8 leading-relaxed">Spiced grilled chicken with steamed broccoli
+                        and herbed jasmine rice.</p>
+                    <div
+                        class="grid grid-cols-3 gap-4 py-6 border-y border-slate-100 dark:border-slate-800 mb-8 mt-auto">
+                        <div class="text-center">
+                            <span class="block text-[10px] text-slate-400 uppercase font-black mb-1">P</span>
+                            <span class="font-bold text-lg dark:text-white">42g</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-[10px] text-slate-400 uppercase font-black mb-1">C</span>
+                            <span class="font-bold text-lg dark:text-white">38g</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-[10px] text-slate-400 uppercase font-black mb-1">F</span>
+                            <span class="font-bold text-lg dark:text-white">12g</span>
+                        </div>
+                    </div>
+                    <button
+                        class="w-full py-4 bg-slate-50 dark:bg-slate-800/50 hover:bg-primary hover:text-white transition-all font-bold rounded-2xl dark:text-white flex items-center justify-center gap-3 group/btn shadow-inner">
+                        Select Meal <span
+                            class="material-symbols-outlined text-lg group-hover/btn:translate-x-1 transition-transform">add_shopping_cart</span>
+                    </button>
+                </div>
+            </div>
+            <div
+                class="min-w-[340px] bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 group transition-all hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2">
+                <div class="relative mb-6">
+                    <img class="w-full h-56 object-cover rounded-2xl" data-alt="Multani Royal Beef Bowl"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxTfFRZHpUo29_8jJIqwVad72HT-9Im3-zcpUdInQzisnZcjPMZzjEazVyJms_x4-KEDdQO_1WAZ2RmEuK9Q6d2Ggtkspqu2RB05w6tWw0G2F_jJsoCCG6PBpDpNCKvuRwNrj7_u92uj6S_NYV2UMU8k1Yh31tdnRoeroeDv2h68kanO9P1IjlKvkMiN0qSZsJ1zmMbJKN-zDJnYkD4G0TEaFkm9uY-vW1TpDi0hhn-DGJNGdq8-9o4A0tdBWYAlvmc5q0gkh59Tw" />
+                    <span
+                        class="absolute top-4 left-4 bg-secondary text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">KETO
+                        OPTION</span>
+                </div>
+                <div class="px-2">
+                    <h4 class="text-2xl font-bold mb-2 dark:text-white">Royal Zaatar Beef</h4>
+                    <p class="text-slate-400 text-sm mb-8 leading-relaxed">Lean beef strips with roasted cauliflower
+                        mash and signature sauce.</p>
+                    <div
+                        class="grid grid-cols-3 gap-4 py-6 border-y border-slate-100 dark:border-slate-800 mb-8 mt-auto">
+                        <div class="text-center">
+                            <span class="block text-[10px] text-slate-400 uppercase font-black mb-1">P</span>
+                            <span class="font-bold text-lg dark:text-white">48g</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-[10px] text-slate-400 uppercase font-black mb-1">C</span>
+                            <span class="font-bold text-lg dark:text-white">12g</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-[10px] text-slate-400 uppercase font-black mb-1">F</span>
+                            <span class="font-bold text-lg dark:text-white">16g</span>
+                        </div>
+                    </div>
+                    <button
+                        class="w-full py-4 bg-slate-50 dark:bg-slate-800/50 hover:bg-primary hover:text-white transition-all font-bold rounded-2xl dark:text-white flex items-center justify-center gap-3 group/btn shadow-inner">
+                        Select Meal <span
+                            class="material-symbols-outlined text-lg group-hover/btn:translate-x-1 transition-transform">add_shopping_cart</span>
+                    </button>
+                </div>
+            </div>
+            <div
+                class="min-w-[340px] bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 group transition-all hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2">
+                <div class="relative mb-6">
+                    <img class="w-full h-56 object-cover rounded-2xl" data-alt="Multani Lean Turkey Bowl"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyV7-XAzx2U_ItHd4Z19lT57AbJC7BhtL1QE7k26IN5uJU0S8ukAd1ViAhpXW8duknUOkmYrMdn2N0HzV9pjag5r3wGtAms2Ylnmh5XA5un43jYxlq9Ng4jLSDtg6Ad-BGoAt26evommRtDmiNMXXqcvITbgvLaiBChrYgLG3lx005ySqx2HD28BMFTb-rLwUQor8c3POoN_Ik26njjy08i3A2_4bDx9HdA6R9Iok9WA23CADSteLp1fwDZf-gT7IuBlkJNAR-2ho" />
+                    <span
+                        class="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">LEAN
+                        PLAN</span>
+                </div>
+                <div class="px-2">
+                    <h4 class="text-2xl font-bold mb-2 dark:text-white">Turkey Performance bowl</h4>
+                    <p class="text-slate-400 text-sm mb-8 leading-relaxed">Lean turkey mince with quinoa and power
+                        greens mix.</p>
+                    <div
+                        class="grid grid-cols-3 gap-4 py-6 border-y border-slate-100 dark:border-slate-800 mb-8 mt-auto">
+                        <div class="text-center">
+                            <span class="block text-[10px] text-slate-400 uppercase font-black mb-1">P</span>
+                            <span class="font-bold text-lg dark:text-white">35g</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-[10px] text-slate-400 uppercase font-black mb-1">C</span>
+                            <span class="font-bold text-lg dark:text-white">30g</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-[10px] text-slate-400 uppercase font-black mb-1">F</span>
+                            <span class="font-bold text-lg dark:text-white">8g</span>
+                        </div>
+                    </div>
+                    <button
+                        class="w-full py-4 bg-slate-50 dark:bg-slate-800/50 hover:bg-primary hover:text-white transition-all font-bold rounded-2xl dark:text-white flex items-center justify-center gap-3 group/btn shadow-inner">
+                        Select Meal <span
+                            class="material-symbols-outlined text-lg group-hover/btn:translate-x-1 transition-transform">add_shopping_cart</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-24 bg-primary overflow-hidden relative">
+        <div class="absolute inset-0 bg-emerald-700 pointer-events-none opacity-20"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h2 class="text-4xl lg:text-6xl font-extrabold text-white mb-8 leading-tight tracking-tight">Ready to Crush
+                Your Goals in <span class="text-secondary italic">Multan?</span></h2>
+            <p class="text-xl text-emerald-50 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">Join 5,000+ athletes
+                who have automated their nutrition with FuelMultan. No contracts, absolute performance.</p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                <button
+                    class="bg-white text-primary px-12 py-6 rounded-2xl font-extrabold text-xl hover:bg-slate-50 transition-all shadow-2xl shadow-black/20">Start
+                    My Plan Now</button>
+                <button
+                    class="bg-transparent border-2 border-white/40 text-white px-12 py-6 rounded-2xl font-extrabold text-xl hover:bg-white/10 transition-all backdrop-blur-md">View
+                    Weekly Menu</button>
+            </div>
+        </div>
+        <div class="absolute right-[-5%] top-[-50%] opacity-10 pointer-events-none transform rotate-12">
+            <span class="material-icons text-[600px] text-white">bolt</span>
+        </div>
+    </section>
+    <footer class="bg-slate-900 text-slate-400 pt-24 pb-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-16 mb-20">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-2 mb-8">
+                        <div class="w-10 h-10 bg-primary flex items-center justify-center rounded-xl">
+                            <span class="material-icons text-white">restaurant</span>
+                        </div>
+                        <span class="text-2xl font-extrabold tracking-tight text-white">Fuel<span
+                                class="text-primary">Multan</span></span>
+                    </div>
+                    <p class="max-w-xs mb-10 text-slate-400 leading-relaxed text-base">Multan's premier performance meal
+                        service. We make elite nutrition the easiest part of your journey.</p>
+                    <div class="flex gap-4">
+                        <a class="w-12 h-12 rounded-2xl bg-slate-800/50 flex items-center justify-center hover:bg-primary hover:text-white transition-all border border-slate-700/50 shadow-sm"
+                            href="#"><span class="material-icons">facebook</span></a>
+                        <a class="w-12 h-12 rounded-2xl bg-slate-800/50 flex items-center justify-center hover:bg-primary hover:text-white transition-all border border-slate-700/50 shadow-sm"
+                            href="#"><span class="material-icons">alternate_email</span></a>
+                        <a class="w-12 h-12 rounded-2xl bg-slate-800/50 flex items-center justify-center hover:bg-primary hover:text-white transition-all border border-slate-700/50 shadow-sm"
+                            href="#"><span class="material-icons">whatsapp</span></a>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="text-white font-black mb-8 uppercase tracking-widest text-xs">Menu</h5>
+                    <ul class="space-y-4">
+                        <li><a class="hover:text-primary transition-colors font-medium" href="#">High Protein</a></li>
+                        <li><a class="hover:text-primary transition-colors font-medium" href="#">Low Carb / Keto</a>
+                        </li>
+                        <li><a class="hover:text-primary transition-colors font-medium" href="#">Lean & Clean</a></li>
+                        <li><a class="hover:text-primary transition-colors font-medium" href="#">Plant Power</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-black mb-8 uppercase tracking-widest text-xs">Experience</h5>
+                    <ul class="space-y-4">
+                        <li><a class="hover:text-primary transition-colors font-medium" href="#">How It Works</a></li>
+                        <li><a class="hover:text-primary transition-colors font-medium" href="#">Multani Chefs</a></li>
+                        <li><a class="hover:text-primary transition-colors font-medium" href="#">Deliveries</a></li>
+                        <li><a class="hover:text-primary transition-colors font-medium" href="#">Success Stories</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-black mb-8 uppercase tracking-widest text-xs">Connect</h5>
+                    <ul class="space-y-4">
+                        <li><a class="hover:text-primary transition-colors font-medium" href="#">Support Center</a></li>
+                        <li><a class="hover:text-primary transition-colors font-medium" href="#">Multan Zones</a></li>
+                        <li><a class="hover:text-primary transition-colors font-medium" href="#">Contact Us</a></li>
+                        <li><a class="hover:text-primary transition-colors font-medium" href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="pt-12 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6 text-sm">
+                <p class="text-slate-500 font-medium whitespace-nowrap">© 2024 FuelMultan Meal Systems PK. Built for
+                    Performance.</p>
+                <div class="flex gap-10">
+                    <a class="hover:text-white transition-colors" href="#">Privacy</a>
+                    <a class="hover:text-white transition-colors" href="#">Terms</a>
+                    <a class="hover:text-white transition-colors" href="#">Refund Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

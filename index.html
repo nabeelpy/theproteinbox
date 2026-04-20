@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FuelMultan — Performance Meals Delivered</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════
+   RESET & TOKENS
+══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g:#22c55e;
+  --gd:#16a34a;
+  --gp:#f0fdf4;
+  --gm:#dcfce7;
+  --text:#0b0f19;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --bg:#f8fafc;
+  --white:#ffffff;
+  --dark:#0b0f19;
+  --dark2:#111827;
+  --r8:8px;--r12:12px;--r16:16px;--r20:20px;--r24:24px;--r32:32px;
+  --s1:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --s2:0 4px 16px rgba(0,0,0,.08);
+  --s3:0 16px 48px rgba(0,0,0,.12);
+  --sg:0 8px 32px rgba(34,197,94,.25);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
+button{font-family:'Inter',sans-serif;cursor:pointer;border:none;outline:none;}
+
+/* ══════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(255,255,255,0.82);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:1px solid rgba(226,232,240,0.7);
+  transition:box-shadow .3s;
+}
+nav.scrolled{box-shadow:0 2px 24px rgba(0,0,0,.07);}
+.nav-w{max-width:1280px;margin:0 auto;padding:0 32px;height:68px;display:flex;align-items:center;gap:0;}
+.logo{display:flex;align-items:center;gap:9px;font-size:21px;font-weight:900;color:var(--text);letter-spacing:-.02em;margin-right:52px;flex-shrink:0;}
+.logo-mark{width:34px;height:34px;background:var(--g);border-radius:9px;display:flex;align-items:center;justify-content:center;}
+.logo-mark svg{width:18px;height:18px;fill:white;}
+.logo em{font-style:italic;color:var(--g);}
+.nav-links{display:flex;gap:2px;flex:1;}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--muted);padding:7px 14px;border-radius:var(--r8);transition:color .17s,background .17s;}
+.nav-links a:hover{color:var(--text);background:#f1f5f9;}
+.nav-r{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.btn-ghost{background:none;border:none;font-size:13.5px;font-weight:600;color:var(--text);padding:8px 14px;border-radius:var(--r8);cursor:pointer;transition:color .17s,background .17s;}
+.btn-ghost:hover{background:#f1f5f9;}
+.btn-cta{background:var(--g);color:white;border:none;border-radius:var(--r12);font-size:13.5px;font-weight:700;padding:10px 22px;cursor:pointer;transition:background .18s,transform .15s,box-shadow .18s;box-shadow:0 2px 12px rgba(34,197,94,.3);}
+.btn-cta:hover{background:var(--gd);transform:scale(1.03);box-shadow:var(--sg);}
+.btn-cta:active{transform:scale(.97);}
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+.hero{
+  min-height:100vh;
+  background:var(--dark);
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:stretch;
+  overflow:hidden;
+  position:relative;
+  padding-top:68px;
+}
+/* Subtle noise texture */
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1;opacity:.4;
+}
+/* Green glow orb */
+.hero-orb{
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(34,197,94,.18) 0%,transparent 70%);
+  top:-100px;left:-100px;pointer-events:none;z-index:1;
+}
+.hero-left{
+  padding:80px 48px 80px 64px;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:2;
+}
+.hero-right{
+  position:relative;overflow:hidden;
+}
+.hero-right img{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(.88) saturate(1.1);
+}
+/* Dark gradient over hero image */
+.hero-right::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to right, var(--dark) 0%, transparent 30%),
+             linear-gradient(to top, var(--dark) 0%, transparent 25%);
+}
+/* Pill badge */
+.hero-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(34,197,94,.12);
+  border:1px solid rgba(34,197,94,.3);
+  color:#4ade80;border-radius:50px;
+  font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:7px 16px;margin-bottom:32px;width:fit-content;
+}
+.pill-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.3);}}
+.hero-h1{
+  font-size:clamp(44px,5.5vw,72px);
+  font-weight:900;line-height:1.05;
+  letter-spacing:-.035em;
+  color:white;
+  margin-bottom:28px;
+}
+.hero-h1 em{font-style:italic;color:var(--g);}
+.hero-p{
+  font-size:17px;font-weight:400;
+  color:#94a3b8;line-height:1.7;
+  max-width:420px;margin-bottom:44px;
+}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:56px;}
+.hbtn-primary{
+  background:var(--g);color:white;
+  border-radius:var(--r16);font-size:15px;font-weight:700;
+  padding:16px 32px;cursor:pointer;
+  transition:background .18s,transform .15s,box-shadow .18s;
+  box-shadow:0 4px 20px rgba(34,197,94,.35);
+  display:flex;align-items:center;gap:9px;
+}
+.hbtn-primary:hover{background:var(--gd);transform:translateY(-2px);box-shadow:0 8px 32px rgba(34,197,94,.4);}
+.hbtn-primary:active{transform:scale(.97);}
+.hbtn-primary svg{width:18px;height:18px;fill:none;stroke:white;stroke-width:2.2;}
+.hbtn-sec{
+  background:rgba(255,255,255,.07);
+  border:1.5px solid rgba(255,255,255,.18);
+  color:white;border-radius:var(--r16);
+  font-size:15px;font-weight:600;
+  padding:16px 28px;cursor:pointer;
+  backdrop-filter:blur(8px);
+  transition:background .18s,transform .15s;
+  display:flex;align-items:center;gap:9px;
+}
+.hbtn-sec:hover{background:rgba(255,255,255,.12);transform:translateY(-2px);}
+.hbtn-sec svg{width:18px;height:18px;fill:none;stroke:white;stroke-width:2.2;}
+/* Social proof */
+.social-proof{display:flex;align-items:center;gap:14px;}
+.avatars{display:flex;}
+.av{
+  width:34px;height:34px;border-radius:50%;
+  border:2.5px solid var(--dark);margin-left:-10px;
+  overflow:hidden;background:#1e293b;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#94a3b8;
+}
+.av:first-child{margin-left:0;}
+.av img{width:100%;height:100%;object-fit:cover;}
+.sp-text strong{font-size:14px;font-weight:800;color:white;}
+.sp-text span{font-size:12px;color:#64748b;display:block;margin-top:1px;}
+
+/* Floating meal card on hero image */
+.hero-card{
+  position:absolute;bottom:40px;left:0;right:40px;z-index:10;
+  background:rgba(15,23,42,.9);
+  border:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(20px);
+  border-radius:var(--r20);padding:20px 24px;
+  max-width:340px;margin-left:auto;
+}
+.hc-tag{font-size:9px;font-weight:800;color:var(--g);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.hc-name{font-size:16px;font-weight:800;color:white;margin-bottom:14px;line-height:1.3;}
+.hc-macros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.hc-macro{text-align:center;background:rgba(255,255,255,.05);border-radius:var(--r8);padding:8px 4px;}
+.hc-macro-label{font-size:9px;font-weight:700;color:#64748b;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px;}
+.hc-macro-val{font-size:18px;font-weight:800;color:white;}
+.hc-macro-val.g{color:#4ade80;}
+.hc-kcal{position:absolute;top:20px;right:24px;font-size:10px;font-weight:700;color:#64748b;}
+
+/* Stats row at bottom of hero left */
+.hero-stats{
+  display:flex;gap:32px;
+  padding-top:40px;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.hstat-val{font-size:26px;font-weight:900;color:white;letter-spacing:-.03em;}
+.hstat-label{font-size:12px;color:#64748b;margin-top:2px;font-weight:500;}
+
+/* ══════════════════════════════════════════
+   TICKER / SCROLLING STRIP
+══════════════════════════════════════════ */
+.ticker{
+  background:var(--g);overflow:hidden;
+  padding:14px 0;display:flex;
+}
+.ticker-track{
+  display:flex;gap:0;white-space:nowrap;
+  animation:ticker 28s linear infinite;
+}
+.ticker-track:hover{animation-play-state:paused;}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.ticker-item{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:12.5px;font-weight:700;color:white;
+  letter-spacing:.04em;text-transform:uppercase;
+  padding:0 28px;
+}
+.ticker-sep{color:rgba(255,255,255,.4);font-size:10px;}
+
+/* ══════════════════════════════════════════
+   SECTION SHARED
+══════════════════════════════════════════ */
+.section{padding:104px 32px;}
+.section-w{max-width:1280px;margin:0 auto;}
+.stag{font-size:11px;font-weight:800;color:var(--g);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;}
+.sh1{font-size:clamp(30px,3.8vw,46px);font-weight:900;letter-spacing:-.03em;line-height:1.15;}
+.sh1 em{font-style:italic;color:var(--g);}
+.sh1-dark{color:white;}
+.sp{font-size:16px;color:var(--muted);margin-top:12px;line-height:1.7;max-width:500px;}
+.sp-w{color:#94a3b8;}
+
+/* ══════════════════════════════════════════
+   HOW IT WORKS — 3 STEPS
+══════════════════════════════════════════ */
+.hiw{background:white;}
+.hiw-head{text-align:center;margin-bottom:80px;}
+.hiw-head .sp{margin:0 auto;}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;position:relative;}
+.steps-grid::before{
+  content:'';position:absolute;top:48px;left:calc(16.66% + 20px);right:calc(16.66% + 20px);
+  height:1px;background:linear-gradient(90deg,transparent,var(--border),var(--border),transparent);
+  z-index:0;
+}
+.step{
+  padding:48px 36px;border-radius:var(--r24);
+  background:white;position:relative;z-index:1;
+  transition:box-shadow .25s,transform .25s;text-align:center;
+}
+.step:hover{box-shadow:var(--s3);transform:translateY(-6px);}
+.step-num{
+  width:56px;height:56px;border-radius:var(--r16);
+  background:var(--gp);border:1.5px solid var(--gm);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 28px;
+  font-size:22px;font-weight:900;color:var(--g);
+}
+.step-title{font-size:20px;font-weight:800;margin-bottom:12px;letter-spacing:-.015em;}
+.step-desc{font-size:14px;color:var(--muted);line-height:1.7;}
+.step-icon{width:28px;height:28px;stroke:var(--g);fill:none;stroke-width:1.8;}
+
+/* ══════════════════════════════════════════
+   FEATURED MEALS (Community Favorites)
+══════════════════════════════════════════ */
+.meals-sec{background:var(--bg);}
+.meals-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:20px;}
+.meals-nav{display:flex;gap:10px;}
+.mnav-btn{
+  width:42px;height:42px;border-radius:50%;
+  border:1.5px solid var(--border);background:white;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .18s;
+}
+.mnav-btn:hover{border-color:var(--g);background:var(--gp);}
+.mnav-btn svg{width:16px;height:16px;stroke:var(--text);fill:none;stroke-width:2;}
+.meals-track-wrap{overflow:hidden;}
+.meals-track{
+  display:flex;gap:20px;
+  transition:transform .45s cubic-bezier(.25,.46,.45,.94);
+}
+.meal-card{
+  flex-shrink:0;width:280px;
+  background:white;border:1px solid var(--border);
+  border-radius:var(--r20);overflow:hidden;
+  transition:box-shadow .25s,transform .25s;cursor:pointer;
+}
+.meal-card:hover{box-shadow:var(--s3);transform:translateY(-5px);}
+.meal-img{height:200px;overflow:hidden;position:relative;}
+.meal-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.25,.46,.45,.94);}
+.meal-card:hover .meal-img img{transform:scale(1.08);}
+.meal-badge{
+  position:absolute;top:12px;left:12px;
+  font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+  padding:4px 10px;border-radius:5px;
+}
+.mb-green{background:var(--g);color:white;}
+.mb-dark{background:rgba(11,15,25,.85);color:white;}
+.mb-amber{background:#f59e0b;color:white;}
+.meal-body{padding:18px 20px 20px;}
+.meal-name{font-size:15px;font-weight:800;margin-bottom:5px;letter-spacing:-.015em;}
+.meal-desc{font-size:12.5px;color:var(--muted);line-height:1.55;margin-bottom:14px;}
+.meal-macros{display:flex;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.mm{text-align:center;flex:1;}
+.mm-val{font-size:15px;font-weight:800;}
+.mm-label{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-top:2px;}
+.meal-footer{display:flex;align-items:center;justify-content:space-between;}
+.meal-price{font-size:17px;font-weight:900;color:var(--text);}
+.add-order-btn{
+  display:flex;align-items:center;gap:6px;
+  background:white;border:1.5px solid var(--border);
+  border-radius:var(--r8);font-size:12px;font-weight:700;
+  padding:8px 14px;color:var(--text);cursor:pointer;
+  transition:all .18s;
+}
+.add-order-btn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2;}
+.add-order-btn:hover{background:var(--g);color:white;border-color:var(--g);}
+
+/* ══════════════════════════════════════════
+   INGREDIENTS TRUST SECTION
+══════════════════════════════════════════ */
+.trust-sec{
+  background:var(--dark);overflow:hidden;
+  position:relative;
+}
+.trust-sec::before{
+  content:'';position:absolute;
+  width:800px;height:800px;border-radius:50%;
+  background:radial-gradient(circle,rgba(34,197,94,.1) 0%,transparent 60%);
+  top:-200px;right:-200px;pointer-events:none;
+}
+.trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.trust-left .sp{max-width:440px;}
+.trust-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px;}
+.tpill{
+  display:flex;align-items:center;gap:8px;
+  border:1px solid rgba(34,197,94,.2);
+  background:rgba(34,197,94,.06);
+  border-radius:50px;padding:9px 18px;
+  font-size:13px;font-weight:600;color:#e2e8f0;
+}
+.tpill svg{width:14px;height:14px;stroke:#4ade80;fill:none;stroke-width:2.2;}
+.trust-right{display:flex;flex-direction:column;gap:20px;}
+.trust-stat-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:var(--r20);padding:28px;
+  display:flex;align-items:center;gap:22px;
+  transition:background .2s,border-color .2s;
+}
+.trust-stat-card:hover{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.2);}
+.tsc-icon{
+  width:52px;height:52px;border-radius:var(--r16);flex-shrink:0;
+  background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.2);
+  display:flex;align-items:center;justify-content:center;
+}
+.tsc-icon svg{width:24px;height:24px;stroke:#4ade80;fill:none;stroke-width:1.8;}
+.tsc-val{font-size:30px;font-weight:900;color:white;letter-spacing:-.03em;}
+.tsc-label{font-size:13px;color:#64748b;margin-top:2px;}
+
+/* ══════════════════════════════════════════
+   TESTIMONIALS
+══════════════════════════════════════════ */
+.testi-sec{background:white;}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px;}
+.testi-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r20);padding:28px;
+  transition:box-shadow .25s,transform .25s;
+}
+.testi-card:hover{box-shadow:var(--s2);transform:translateY(-3px);}
+.testi-stars{display:flex;gap:3px;margin-bottom:16px;}
+.star{width:14px;height:14px;fill:#f59e0b;}
+.testi-text{font-size:14.5px;line-height:1.7;color:#374151;margin-bottom:20px;font-style:italic;}
+.testi-text::before{content:'"';font-size:40px;line-height:.6;color:var(--gm);font-weight:900;display:block;margin-bottom:8px;}
+.testi-author{display:flex;align-items:center;gap:12px;}
+.ta-av{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--gp);display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:var(--g);flex-shrink:0;
+}
+.ta-name{font-size:13px;font-weight:700;}
+.ta-sub{font-size:11.5px;color:var(--muted);margin-top:1px;}
+
+/* ══════════════════════════════════════════
+   CTA BANNER
+══════════════════════════════════════════ */
+.cta-sec{
+  background:var(--g);
+  position:relative;overflow:hidden;
+  padding:96px 32px;text-align:center;
+}
+.cta-sec::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    45deg,
+    transparent,transparent 40px,
+    rgba(0,0,0,.03) 40px,rgba(0,0,0,.03) 41px
+  );
+}
+/* Big decorative bolt */
+.cta-bolt{
+  position:absolute;right:-4%;top:-40%;
+  font-size:700px;line-height:1;
+  color:rgba(0,0,0,.06);
+  font-weight:900;pointer-events:none;
+  transform:rotate(5deg);
+  letter-spacing:-10px;
+}
+.cta-w{position:relative;z-index:2;max-width:700px;margin:0 auto;}
+.cta-h1{font-size:clamp(32px,4.5vw,56px);font-weight:900;letter-spacing:-.03em;color:var(--dark);line-height:1.1;margin-bottom:20px;}
+.cta-h1 em{font-style:italic;color:white;}
+.cta-p{font-size:17px;color:rgba(11,15,25,.65);margin-bottom:44px;line-height:1.65;}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.cta-btn-dark{
+  background:var(--dark);color:white;
+  border-radius:var(--r16);font-size:15px;font-weight:700;
+  padding:17px 38px;cursor:pointer;
+  transition:background .18s,transform .15s;
+  border:none;
+}
+.cta-btn-dark:hover{background:var(--dark2);transform:translateY(-2px);}
+.cta-btn-out{
+  background:transparent;color:var(--dark);
+  border:2px solid rgba(11,15,25,.3);
+  border-radius:var(--r16);font-size:15px;font-weight:700;
+  padding:17px 38px;cursor:pointer;
+  transition:all .18s;
+}
+.cta-btn-out:hover{background:rgba(0,0,0,.08);transform:translateY(-2px);}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer{background:var(--dark);color:#64748b;padding:80px 32px 40px;}
+.footer-w{max-width:1280px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px;}
+.footer-brand .logo{margin-bottom:20px;margin-right:0;}
+.footer-brand p{font-size:13.5px;line-height:1.7;max-width:280px;margin-bottom:28px;}
+.footer-socials{display:flex;gap:10px;}
+.fsoc{
+  width:38px;height:38px;border-radius:var(--r8);
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.04);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .17s;
+}
+.fsoc:hover{background:var(--g);border-color:var(--g);}
+.fsoc svg{width:15px;height:15px;fill:none;stroke:#94a3b8;stroke-width:2;transition:stroke .17s;}
+.fsoc:hover svg{stroke:white;}
+.fcol h5{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:white;margin-bottom:20px;}
+.fcol ul{list-style:none;}
+.fcol li{margin-bottom:10px;}
+.fcol a{font-size:13.5px;font-weight:500;transition:color .17s;}
+.fcol a:hover{color:white;}
+.footer-bot{
+  border-top:1px solid rgba(255,255,255,.06);
+  padding-top:32px;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:16px;
+}
+.footer-bot p{font-size:12.5px;}
+.footer-bot-links{display:flex;gap:24px;}
+.footer-bot-links a{font-size:12.5px;transition:color .17s;}
+.footer-bot-links a:hover{color:white;}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr;min-height:auto;}
+  .hero-right{height:50vw;min-height:340px;}
+  .hero-left{padding:56px 32px;}
+  .trust-grid{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:40px;}
+}
+@media(max-width:768px){
+  .section{padding:72px 20px;}
+  .steps-grid{grid-template-columns:1fr;gap:12px;}
+  .steps-grid::before{display:none;}
+  .testi-grid{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;}
+  .hero-left{padding:40px 24px;}
+  .hero-h1{font-size:clamp(36px,8vw,52px);}
+  .nav-links{display:none;}
+}
+
+/* ══════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════ */
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+.fade-up.visible{opacity:1;transform:none;}
+.fade-up-d1{transition-delay:.1s;}
+.fade-up-d2{transition-delay:.2s;}
+.fade-up-d3{transition-delay:.3s;}
+</style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══════════════════════════════ -->
+<nav id="nav">
+  <div class="nav-w">
+    <a href="#" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      Fuel<em>Multan</em>
+    </a>
+    <div class="nav-links">
+      <a href="meals.html">Meal Plans</a>
+      <a href="#">How It Works</a>
+      <a href="#">Reviews</a>
+      <a href="#">Pricing</a>
+    </div>
+    <div class="nav-r">
+      <button class="btn-ghost">Login</button>
+      <button class="btn-cta" onclick="location.href='meals.html'">Get Started</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ═════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-orb"></div>
+
+  <!-- Left -->
+  <div class="hero-left">
+    <div class="hero-pill">
+      <span class="pill-dot"></span>
+      New: High Protein Bulk Plan
+    </div>
+
+    <h1 class="hero-h1">
+      Fuel Your<br/><em>Gains</em><br/>Effortlessly.
+    </h1>
+
+    <p class="hero-p">
+      Chef-prepared, macro-friendly meals delivered to your doorstep.
+      Optimized for performance, designed for results.
+    </p>
+
+    <div class="hero-btns">
+      <button class="hbtn-primary" onclick="location.href='meals.html'">
+        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Choose Your Plan
+      </button>
+      <button class="hbtn-sec">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        How It Works
+      </button>
+    </div>
+
+    <div class="social-proof">
+      <div class="avatars">
+        <div class="av" style="background:#1e3a2f;color:#4ade80;">A</div>
+        <div class="av" style="background:#1e293b;color:#94a3b8;">S</div>
+        <div class="av" style="background:#2d1e3a;color:#a78bfa;">M</div>
+        <div class="av" style="background:#3a2a1e;color:#fb923c;">R</div>
+      </div>
+      <div class="sp-text">
+        <strong>12,000+ Performance Seekers</strong>
+        <span>Trusted by athletes across Pakistan</span>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="hstat-val">98%</div>
+        <div class="hstat-label">Satisfaction rate</div>
+      </div>
+      <div>
+        <div class="hstat-val">48g+</div>
+        <div class="hstat-label">Avg protein / meal</div>
+      </div>
+      <div>
+        <div class="hstat-val">3 min</div>
+        <div class="hstat-label">Prep time</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right image -->
+  <div class="hero-right">
+    <img
+      src="https://images.unsplash.com/photo-1547592180-85f173990554?w=1200&auto=format&fit=crop&q=85"
+      alt="Performance meal"
+    />
+    <!-- Floating card -->
+    <div class="hero-card">
+      <div class="hc-tag">Signature Harvest Bowl</div>
+      <div class="hc-name">Roasted Salmon &amp; Quinoa Power Bowl</div>
+      <div class="hc-kcal">520 kcal</div>
+      <div class="hc-macros">
+        <div class="hc-macro">
+          <div class="hc-macro-label">Protein</div>
+          <div class="hc-macro-val g">48g</div>
+        </div>
+        <div class="hc-macro">
+          <div class="hc-macro-label">Carbs</div>
+          <div class="hc-macro-val">38g</div>
+        </div>
+        <div class="hc-macro">
+          <div class="hc-macro-label">Fats</div>
+          <div class="hc-macro-val">14g</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TICKER ════════════════════════════════ -->
+<div class="ticker">
+  <div class="ticker-track" id="ticker">
+    <!-- duplicated for seamless loop -->
+    <span class="ticker-item"><svg style="width:14px;height:14px;fill:rgba(255,255,255,.6)" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> Free delivery on your first box</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">100% whole ingredients</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">No contracts · Cancel anytime</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Macro-balanced every meal</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Delivered fresh across Multan</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Chef-crafted, dietitian-approved</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <!-- duplicate set -->
+    <span class="ticker-item"><svg style="width:14px;height:14px;fill:rgba(255,255,255,.6)" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> Free delivery on your first box</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">100% whole ingredients</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">No contracts · Cancel anytime</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Macro-balanced every meal</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Delivered fresh across Multan</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Chef-crafted, dietitian-approved</span>
+    <span class="ticker-item ticker-sep">✦</span>
+  </div>
+</div>
+
+<!-- ══ HOW IT WORKS ══════════════════════════ -->
+<section class="section hiw">
+  <div class="section-w">
+    <div class="hiw-head fade-up">
+      <div class="stag">Simple process</div>
+      <h2 class="sh1">Your Fitness Fuel in <em>3 Steps</em></h2>
+      <p class="sp">We've streamlined the nutrition process so you can focus on crushing your PBs.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step fade-up fade-up-d1">
+        <div class="step-num">01</div>
+        <h3 class="step-title">Choose Your Goal</h3>
+        <p class="step-desc">Whether you're bulking, cutting, or maintaining — select a plan tailored to your specific caloric and macro needs.</p>
+      </div>
+      <div class="step fade-up fade-up-d2">
+        <div class="step-num">02</div>
+        <h3 class="step-title">Chef Prepared</h3>
+        <p class="step-desc">Our elite chefs cook with premium whole ingredients, ensuring high protein and perfect portions in every tray.</p>
+      </div>
+      <div class="step fade-up fade-up-d3">
+        <div class="step-num">03</div>
+        <h3 class="step-title">Doorstep Delivery</h3>
+        <p class="step-desc">Ready-to-eat meals delivered weekly in refrigerated boxes. Just heat for 3 minutes and power through your day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COMMUNITY FAVORITES ══════════════════ -->
+<section class="section meals-sec">
+  <div class="section-w">
+    <div class="meals-head fade-up">
+      <div>
+        <div class="stag">Most ordered</div>
+        <h2 class="sh1">Community <em>Favorites</em></h2>
+        <p class="sp">The most ordered meals by our top-performing athletes.</p>
+      </div>
+      <div class="meals-nav">
+        <button class="mnav-btn" id="prev-btn" aria-label="Previous">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="mnav-btn" id="next-btn" aria-label="Next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="meals-track-wrap">
+      <div class="meals-track" id="meals-track">
+
+        <!-- Meal 1 -->
+        <div class="meal-card fade-up fade-up-d1">
+          <div class="meal-img">
+            <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&auto=format&fit=crop&q=80" alt="Teriyaki Glazed Salmon"/>
+            <span class="meal-badge mb-green">High Protein</span>
+          </div>
+          <div class="meal-body">
+            <div class="meal-name">Teriyaki Glazed Salmon</div>
+            <div class="meal-desc">With steamed broccoli and brown jasmine rice.</div>
+            <div class="meal-macros">
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">38g</span></div><div class="mm-label">Protein</div></div>
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">42g</span></div><div class="mm-label">Carbs</div></div>
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">12g</span></div><div class="mm-label">Fats</div></div>
+            </div>
+            <div class="meal-footer">
+              <span class="meal-price">$13.99</span>
+              <button class="add-order-btn" onclick="addCart(this,'Teriyaki Salmon')">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                Add to Order
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meal 2 -->
+        <div class="meal-card fade-up fade-up-d2">
+          <div class="meal-img">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&auto=format&fit=crop&q=80" alt="Chili Lime Chicken"/>
+            <span class="meal-badge mb-amber">Keto Friendly</span>
+          </div>
+          <div class="meal-body">
+            <div class="meal-name">Chili Lime Chicken</div>
+            <div class="meal-desc">Zesty grilled chicken with roasted cauliflower mash.</div>
+            <div class="meal-macros">
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">45g</span></div><div class="mm-label">Protein</div></div>
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">8g</span></div><div class="mm-label">Carbs</div></div>
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">14g</span></div><div class="mm-label">Fats</div></div>
+            </div>
+            <div class="meal-footer">
+              <span class="meal-price">$12.49</span>
+              <button class="add-order-btn" onclick="addCart(this,'Chili Lime Chicken')">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                Add to Order
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meal 3 -->
+        <div class="meal-card fade-up fade-up-d3">
+          <div class="meal-img">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop&q=80" alt="Turkey Superbowl"/>
+            <span class="meal-badge mb-dark">Lean Plan</span>
+          </div>
+          <div class="meal-body">
+            <div class="meal-name">Turkey Superbowl</div>
+            <div class="meal-desc">Lean turkey mince, quinoa, and power greens mix.</div>
+            <div class="meal-macros">
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">35g</span></div><div class="mm-label">Protein</div></div>
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">30g</span></div><div class="mm-label">Carbs</div></div>
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">8g</span></div><div class="mm-label">Fats</div></div>
+            </div>
+            <div class="meal-footer">
+              <span class="meal-price">$11.99</span>
+              <button class="add-order-btn" onclick="addCart(this,'Turkey Superbowl')">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                Add to Order
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meal 4 -->
+        <div class="meal-card">
+          <div class="meal-img">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80" alt="Vegan Power Bowl"/>
+            <span class="meal-badge mb-green">Plant Based</span>
+          </div>
+          <div class="meal-body">
+            <div class="meal-name">Vegan Power Bowl</div>
+            <div class="meal-desc">Crispy falafel with avocado and tahini dressing.</div>
+            <div class="meal-macros">
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">28g</span></div><div class="mm-label">Protein</div></div>
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">55g</span></div><div class="mm-label">Carbs</div></div>
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">16g</span></div><div class="mm-label">Fats</div></div>
+            </div>
+            <div class="meal-footer">
+              <span class="meal-price">$11.50</span>
+              <button class="add-order-btn" onclick="addCart(this,'Vegan Power Bowl')">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                Add to Order
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meal 5 -->
+        <div class="meal-card">
+          <div class="meal-img">
+            <img src="https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=600&auto=format&fit=crop&q=80" alt="Beef Stir Fry"/>
+            <span class="meal-badge mb-dark">Bulk Plan</span>
+          </div>
+          <div class="meal-body">
+            <div class="meal-name">Garlic Beef Stir Fry</div>
+            <div class="meal-desc">Grass-fed beef with pak choi, peppers and brown rice.</div>
+            <div class="meal-macros">
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">52g</span></div><div class="mm-label">Protein</div></div>
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">44g</span></div><div class="mm-label">Carbs</div></div>
+              <div class="mm"><div class="meal-footer" style="justify-content:center"><span class="mm-val">18g</span></div><div class="mm-label">Fats</div></div>
+            </div>
+            <div class="meal-footer">
+              <span class="meal-price">$14.99</span>
+              <button class="add-order-btn" onclick="addCart(this,'Garlic Beef Stir Fry')">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                Add to Order
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TRUST / INGREDIENTS ══════════════════ -->
+<section class="section trust-sec">
+  <div class="section-w">
+    <div class="trust-grid">
+      <div class="trust-left fade-up">
+        <div class="stag" style="color:#4ade80;">Built different</div>
+        <h2 class="sh1 sh1-dark">Ingredients you can<br/><em>actually pronounce</em></h2>
+        <p class="sp sp-w">No fillers. No preservatives. No shortcuts. Every ingredient is sourced from trusted Pakistani farms and global premium suppliers — cooked fresh every week.</p>
+        <div class="trust-pills">
+          <div class="tpill"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Zero artificial additives</div>
+          <div class="tpill"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Macro-calibrated by dietitians</div>
+          <div class="tpill"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sealed fresh, not frozen</div>
+          <div class="tpill"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Halal certified</div>
+          <div class="tpill"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>5-day refrigerated shelf life</div>
+          <div class="tpill"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Ready in 3 minutes</div>
+        </div>
+      </div>
+      <div class="trust-right fade-up fade-up-d2">
+        <div class="trust-stat-card">
+          <div class="tsc-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div>
+            <div class="tsc-val">12,000+</div>
+            <div class="tsc-label">Active subscribers in Pakistan</div>
+          </div>
+        </div>
+        <div class="trust-stat-card">
+          <div class="tsc-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div>
+            <div class="tsc-val">4.9 / 5</div>
+            <div class="tsc-label">Average customer rating across 3,800+ reviews</div>
+          </div>
+        </div>
+        <div class="trust-stat-card">
+          <div class="tsc-icon">
+            <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div>
+            <div class="tsc-val">Same day</div>
+            <div class="tsc-label">Delivery across all Multan zones</div>
+          </div>
+        </div>
+        <div class="trust-stat-card">
+          <div class="tsc-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div class="tsc-val">100%</div>
+            <div class="tsc-label">Halal certified. Every ingredient, every batch.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══════════════════════════ -->
+<section class="section testi-sec">
+  <div class="section-w">
+    <div class="fade-up" style="text-align:center;margin-bottom:0;">
+      <div class="stag" style="text-align:center;">Real results</div>
+      <h2 class="sh1" style="text-align:center;">What athletes are <em>saying</em></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card fade-up fade-up-d1">
+        <div class="testi-stars">
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testi-text">I gained 6kg of lean muscle in 10 weeks. The salmon bowl alone is worth every rupee. I don't even think about meal prep anymore.</p>
+        <div class="testi-author">
+          <div class="ta-av">AK</div>
+          <div>
+            <div class="ta-name">Ali Kamran</div>
+            <div class="ta-sub">Competitive Bodybuilder · Multan</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card fade-up fade-up-d2">
+        <div class="testi-stars">
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testi-text">As a doctor with a 12-hour shift, I have zero time to cook. FuelMultan has been an absolute game-changer — tasty, clean, and perfectly portioned.</p>
+        <div class="testi-author">
+          <div class="ta-av" style="background:#ede9fe;color:#7c3aed;">SR</div>
+          <div>
+            <div class="ta-name">Dr. Sana Riaz</div>
+            <div class="ta-sub">Physician &amp; Fitness Enthusiast</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card fade-up fade-up-d3">
+        <div class="testi-stars">
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testi-text">Lost 8kg in 8 weeks on the Lean Plan without feeling deprived. The food is genuinely delicious — not your typical diet food at all.</p>
+        <div class="testi-author">
+          <div class="ta-av" style="background:#fef3c7;color:#b45309;">MH</div>
+          <div>
+            <div class="ta-name">Muhammad Hassan</div>
+            <div class="ta-sub">CrossFit Athlete · BahauddinZakariya Uni</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA BANNER ════════════════════════════ -->
+<section class="cta-sec">
+  <div class="cta-bolt">⚡</div>
+  <div class="cta-w">
+    <h2 class="cta-h1">Ready to Smash Your <em>Fitness Goals?</em></h2>
+    <p class="cta-p">Join the 12,000+ athletes who have automated their nutrition with FuelMultan. No contracts, cancel any time.</p>
+    <div class="cta-btns">
+      <button class="cta-btn-dark" onclick="location.href='meals.html'">Start My Plan Now</button>
+      <button class="cta-btn-out" onclick="location.href='meals.html'">View All Menus</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════ -->
+<footer>
+  <div class="footer-w">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          Fuel<em>Multan</em>
+        </a>
+        <p>Premium meal prep service designed for athletes and fitness enthusiasts. We make eating clean the easiest part of your day.</p>
+        <div class="footer-socials">
+          <a class="fsoc" href="#"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+          <a class="fsoc" href="#"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a class="fsoc" href="#"><svg viewBox="0 0 24 24"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM11 11V7m4 4V9"/></svg></a>
+        </div>
+      </div>
+      <div class="fcol">
+        <h5>Product</h5>
+        <ul>
+          <li><a href="meals.html">Menu</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Bulk Plans</a></li>
+          <li><a href="#">Custom Macros</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Success Stories</a></li>
+          <li><a href="#">Affiliates</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <h5>Support</h5>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Delivery Map</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bot">
+      <p>© 2024 Whey To Go Meal Prep. All rights reserved.</p>
+      <div class="footer-bot-links">
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast" style="position:fixed;bottom:24px;right:24px;background:#0b0f19;color:white;border-radius:12px;padding:14px 20px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px;box-shadow:0 16px 40px rgba(0,0,0,.2);transform:translateY(20px);opacity:0;transition:all .35s cubic-bezier(.16,1,.3,1);pointer-events:none;z-index:999;">
+  <svg style="width:16px;height:16px;fill:none;stroke:#22c55e;stroke-width:2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-txt">Added to order!</span>
+</div>
+
+<script>
+/* Navbar scroll */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20));
+
+/* Carousel */
+const track = document.getElementById('meals-track');
+const cardW = 300;
+let offset = 0;
+document.getElementById('next-btn').addEventListener('click',()=>{
+  const max = track.scrollWidth - track.parentElement.offsetWidth;
+  offset = Math.min(offset + cardW, max);
+  track.style.transform = `translateX(-${offset}px)`;
+});
+document.getElementById('prev-btn').addEventListener('click',()=>{
+  offset = Math.max(offset - cardW, 0);
+  track.style.transform = `translateX(-${offset}px)`;
+});
+
+/* Cart toast */
+let toastTimer;
+function addCart(btn, name){
+  const txt = document.getElementById('toast-txt');
+  const toast = document.getElementById('toast');
+  txt.textContent = name + ' added!';
+  toast.style.opacity='1';toast.style.transform='translateY(0)';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{toast.style.opacity='0';toast.style.transform='translateY(20px)';},2400);
+  btn.textContent='✓ Added';
+  btn.style.background='var(--g)';btn.style.color='white';btn.style.borderColor='var(--g)';
+}
+
+/* Scroll-triggered fade-up animations */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.12});
+document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

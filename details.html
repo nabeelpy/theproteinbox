@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NourishCo — Performance Meals, Delivered</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  /* ── Reset & Base ────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green:      #22c55e;
+    --green-dark: #16a34a;
+    --green-pale: #f0fdf4;
+    --green-mid:  #dcfce7;
+    --text:       #0f1117;
+    --muted:      #6b7280;
+    --border:     #e5e7eb;
+    --surface:    #ffffff;
+    --bg:         #fafaf9;
+    --radius-sm:  10px;
+    --radius-md:  16px;
+    --radius-lg:  24px;
+    --radius-xl:  32px;
+    --shadow-sm:  0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md:  0 4px 16px rgba(0,0,0,.08), 0 1px 4px rgba(0,0,0,.04);
+    --shadow-lg:  0 12px 40px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.05);
+    --font-display: 'Inter', sans-serif;
+    --font-body:    'Inter', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Navbar ──────────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    background: rgba(255,255,255,0.80);
+    border-bottom: 1px solid rgba(229,231,235,0.7);
+    transition: box-shadow .3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,.07); }
+  .nav-inner {
+    max-width: 1200px; margin: 0 auto;
+    padding: 0 24px;
+    height: 68px;
+    display: flex; align-items: center; gap: 40px;
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 800; font-size: 22px;
+    color: var(--text); text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+    flex-shrink: 0;
+  }
+  .logo-dot {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-dot svg { width: 16px; height: 16px; fill: white; }
+  .logo span { color: var(--green); }
+  .nav-links {
+    display: flex; align-items: center; gap: 4px;
+    list-style: none; flex: 1;
+  }
+  .nav-links a {
+    font-size: 14px; font-weight: 500;
+    color: var(--muted); text-decoration: none;
+    padding: 6px 14px; border-radius: var(--radius-sm);
+    transition: color .2s, background .2s;
+  }
+  .nav-links a:hover { color: var(--text); background: #f3f4f6; }
+  .nav-links a.active { color: var(--green); }
+  .nav-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .icon-btn {
+    width: 40px; height: 40px; border-radius: 10px;
+    border: 1px solid var(--border);
+    background: white; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s, border-color .2s, transform .15s;
+    position: relative;
+  }
+  .icon-btn:hover { background: var(--green-pale); border-color: var(--green); transform: scale(1.05); }
+  .icon-btn svg { width: 18px; height: 18px; stroke: var(--text); fill: none; stroke-width: 1.8; }
+  .cart-badge {
+    position: absolute; top: -6px; right: -6px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--green); color: white;
+    font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+  }
+  .btn-primary {
+    background: var(--green); color: white;
+    border: none; border-radius: var(--radius-sm);
+    font-family: var(--font-body); font-size: 14px; font-weight: 500;
+    padding: 9px 20px; cursor: pointer;
+    transition: background .2s, transform .15s, box-shadow .2s;
+    white-space: nowrap;
+  }
+  .btn-primary:hover { background: var(--green-dark); transform: scale(1.03); box-shadow: 0 4px 12px rgba(34,197,94,.3); }
+  .btn-primary:active { transform: scale(.97); }
+
+  /* ── Main container ──────────────────────── */
+  main { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── Product Hero ────────────────────────── */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    padding: 64px 0 80px;
+    align-items: start;
+  }
+  @media(max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; padding: 40px 0 56px; }
+  }
+
+  /* Image side */
+  .product-img-wrap {
+    position: sticky; top: 100px;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    aspect-ratio: 1;
+    cursor: zoom-in;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+  }
+  .product-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .6s cubic-bezier(.25,.46,.45,.94);
+  }
+  .product-img-wrap:hover img { transform: scale(1.06); }
+  .img-badge {
+    position: absolute; top: 16px; left: 16px;
+    background: white; border-radius: 10px;
+    padding: 6px 14px;
+    font-size: 12px; font-weight: 600; font-family: var(--font-display);
+    color: var(--green);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--green-mid);
+  }
+
+  /* Info side */
+  .product-info { display: flex; flex-direction: column; gap: 28px; }
+  .category-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--green-pale); border: 1px solid var(--green-mid);
+    color: var(--green-dark); border-radius: 50px;
+    font-size: 12px; font-weight: 600; font-family: var(--font-display);
+    padding: 5px 14px; width: fit-content;
+    letter-spacing: .03em; text-transform: uppercase;
+  }
+  .category-tag svg { width: 13px; height: 13px; fill: var(--green); }
+  .product-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800; line-height: 1.15;
+    letter-spacing: -.02em;
+  }
+  .product-title em { font-style: normal; color: var(--green); }
+  .product-desc { color: var(--muted); font-size: 15px; line-height: 1.7; }
+
+  /* Macro cards */
+  .macro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .macro-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 16px;
+    text-align: center;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+  }
+  .macro-card:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(34,197,94,.12); transform: translateY(-2px); }
+  .macro-val { font-family: var(--font-display); font-size: 26px; font-weight: 800; color: var(--text); }
+  .macro-unit { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .macro-label { font-size: 11px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: .05em; margin-top: 4px; }
+  .kcal-badge {
+    display: flex; align-items: center; gap: 8px;
+    background: #fffbeb; border: 1px solid #fde68a;
+    border-radius: 10px; padding: 10px 16px;
+    font-size: 13px; color: #92400e; font-weight: 500;
+  }
+  .kcal-badge strong { color: #78350f; font-weight: 700; }
+
+  /* Ingredients */
+  .ingredients-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    background: white; border: 1px solid var(--border);
+    border-radius: 50px; font-size: 13px;
+    color: var(--text); padding: 5px 14px;
+    transition: border-color .2s, color .2s, background .2s;
+  }
+  .tag:hover { border-color: var(--green); color: var(--green); background: var(--green-pale); }
+
+  /* Price + CTA */
+  .purchase-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .price-block .price-main { font-family: var(--font-display); font-size: 34px; font-weight: 800; }
+  .price-block .price-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .qty-ctrl {
+    display: flex; align-items: center; gap: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 6px;
+    background: white;
+  }
+  .qty-btn {
+    width: 34px; height: 34px; border-radius: 8px;
+    border: 1px solid var(--border); background: white;
+    cursor: pointer; font-size: 18px; font-weight: 400;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text);
+    transition: background .2s, border-color .2s, transform .15s;
+    user-select: none;
+  }
+  .qty-btn:hover { background: var(--green-pale); border-color: var(--green); }
+  .qty-btn:active { transform: scale(.9); }
+  .qty-val { font-family: var(--font-display); font-size: 18px; font-weight: 700; min-width: 24px; text-align: center; }
+  .add-btn {
+    flex: 1; min-width: 160px;
+    background: var(--green); color: white; border: none;
+    border-radius: var(--radius-sm); padding: 14px 24px;
+    font-family: var(--font-body); font-size: 15px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background .2s, transform .15s, box-shadow .2s;
+    position: relative; overflow: hidden;
+  }
+  .add-btn:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(34,197,94,.35); }
+  .add-btn:active { transform: scale(.97) translateY(0); }
+  .add-btn svg { width: 18px; height: 18px; fill: none; stroke: white; stroke-width: 2; }
+
+  /* Ripple */
+  .ripple {
+    position: absolute; border-radius: 50%;
+    background: rgba(255,255,255,.4);
+    transform: scale(0); animation: ripple-anim .5s linear;
+    pointer-events: none;
+  }
+  @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+
+  /* ── Divider ─────────────────────────────── */
+  .section-divider { height: 1px; background: var(--border); margin: 0; }
+
+  /* ── Features ────────────────────────────── */
+  .section { padding: 80px 0; }
+  .section-header { margin-bottom: 48px; }
+  .section-tag {
+    font-size: 12px; font-weight: 700; color: var(--green-dark);
+    text-transform: uppercase; letter-spacing: .1em;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3.5vw, 36px);
+    font-weight: 800; letter-spacing: -.02em; line-height: 1.2;
+  }
+  .section-title em { font-style: normal; color: var(--green); }
+  .section-sub { color: var(--muted); font-size: 15px; max-width: 480px; margin-top: 10px; line-height: 1.65; }
+
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+  .feat-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 28px;
+    transition: box-shadow .25s, transform .25s, border-color .25s;
+  }
+  .feat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); border-color: var(--green); }
+  .feat-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    background: var(--green-pale); border: 1px solid var(--green-mid);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
+  }
+  .feat-icon svg { width: 22px; height: 22px; stroke: var(--green-dark); fill: none; stroke-width: 1.8; }
+  .feat-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .feat-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ── Nutrient Breakdown ───────────────────── */
+  .breakdown-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  @media(max-width: 700px) { .breakdown-grid { grid-template-columns: 1fr; gap: 40px; } }
+  .nutrient-list { display: flex; flex-direction: column; gap: 20px; }
+  .nutrient-row {}
+  .nutrient-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .nutrient-name { font-size: 13px; font-weight: 600; }
+  .nutrient-pct { font-size: 13px; font-weight: 700; color: var(--green-dark); }
+  .bar-track {
+    height: 8px; background: var(--green-mid); border-radius: 50px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 50px;
+    background: linear-gradient(90deg, var(--green), #4ade80);
+    width: 0; transition: width 1s cubic-bezier(.16,1,.3,1);
+  }
+
+  /* ── Recommended ─────────────────────────── */
+  .rec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+  .rec-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow .25s, transform .25s;
+  }
+  .rec-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); }
+  .rec-img { aspect-ratio: 4/3; overflow: hidden; }
+  .rec-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s cubic-bezier(.25,.46,.45,.94); }
+  .rec-card:hover .rec-img img { transform: scale(1.07); }
+  .rec-body { padding: 18px; }
+  .rec-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .rec-kcal { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+  .rec-footer { display: flex; align-items: center; justify-content: space-between; }
+  .rec-price { font-family: var(--font-display); font-size: 17px; font-weight: 800; }
+  .rec-add {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: var(--green-pale); border: 1px solid var(--green-mid);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background .2s, transform .15s;
+  }
+  .rec-add:hover { background: var(--green); }
+  .rec-add:hover svg { stroke: white; }
+  .rec-add:active { transform: scale(.9); }
+  .rec-add svg { width: 16px; height: 16px; stroke: var(--green-dark); fill: none; stroke-width: 2.2; transition: stroke .2s; }
+
+  /* ── Mobile Sticky CTA ───────────────────── */
+  .mobile-cta {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    padding: 16px 20px 28px;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    z-index: 200;
+  }
+  @media(max-width: 700px) { .mobile-cta { display: block; } }
+  .mobile-cta-btn {
+    width: 100%; background: var(--green); color: white; border: none;
+    border-radius: var(--radius-md); padding: 16px;
+    font-family: var(--font-body); font-size: 16px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: background .2s, transform .15s;
+  }
+  .mobile-cta-btn:hover { background: var(--green-dark); }
+  .mobile-cta-btn:active { transform: scale(.98); }
+  .mobile-cta-btn svg { width: 20px; height: 20px; fill: none; stroke: white; stroke-width: 2; }
+
+  /* ── Footer ──────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 60px 24px;
+    margin-top: 40px;
+  }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-logo { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--text); }
+  .footer-logo span { color: var(--green); }
+  .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy { font-size: 12px; color: var(--muted); }
+
+  /* ── Cart notification ───────────────────── */
+  .cart-toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--text); color: white;
+    border-radius: var(--radius-md); padding: 14px 20px;
+    font-size: 14px; font-weight: 500;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(20px); opacity: 0;
+    transition: transform .35s cubic-bezier(.16,1,.3,1), opacity .35s;
+    pointer-events: none; z-index: 300;
+  }
+  .cart-toast.show { transform: translateY(0); opacity: 1; }
+  .cart-toast svg { width: 18px; height: 18px; fill: none; stroke: var(--green); stroke-width: 2.2; }
+
+  /* ── Utility ──────────────────────────────── */
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+</style>
+</head>
+<body>
+
+<!-- ── Navbar ───────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-dot">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+      </div>
+      Nourish<span>Co</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Meals</a></li>
+      <li><a href="#">Plans</a></li>
+      <li><a href="#">Performance</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <!-- Search -->
+      <button class="icon-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      </button>
+      <!-- Cart -->
+      <button class="icon-btn" id="cart-btn" aria-label="Cart">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <div class="cart-badge" id="cart-count">0</div>
+      </button>
+      <button class="btn-primary">Get Started</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Product Hero ──────────────────────────── -->
+<main>
+  <section class="hero-grid" aria-label="Product detail">
+    <!-- Image -->
+    <div class="product-img-wrap" role="img" aria-label="Teriyaki Salmon Bowl">
+      <div class="img-badge">⭐ Best Seller</div>
+      <img
+        src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=900&auto=format&fit=crop&q=80"
+        alt="Teriyaki Salmon Power Bowl"
+        loading="eager"
+      />
+    </div>
+
+    <!-- Info -->
+    <div class="product-info">
+      <div class="category-tag">
+        <svg viewBox="0 0 16 16"><path d="M8 2a6 6 0 100 12A6 6 0 008 2zm0 1a5 5 0 110 10A5 5 0 018 3z"/></svg>
+        High Protein · Chef's Pick
+      </div>
+
+      <h1 class="product-title">Teriyaki Salmon<br/><em>Power Bowl</em></h1>
+
+      <p class="product-desc">
+        Wild-caught Atlantic salmon glazed in our signature teriyaki reduction, served over brown rice with crisp edamame, roasted sesame broccoli, and pickled ginger. Engineered for peak performance.
+      </p>
+
+      <!-- Macros -->
+      <div class="macro-grid">
+        <div class="macro-card">
+          <div class="macro-val">42<span style="font-size:18px">g</span></div>
+          <div class="macro-unit">per serving</div>
+          <div class="macro-label">Protein</div>
+        </div>
+        <div class="macro-card">
+          <div class="macro-val">54<span style="font-size:18px">g</span></div>
+          <div class="macro-unit">per serving</div>
+          <div class="macro-label">Carbs</div>
+        </div>
+        <div class="macro-card">
+          <div class="macro-val">18<span style="font-size:18px">g</span></div>
+          <div class="macro-unit">per serving</div>
+          <div class="macro-label">Fats</div>
+        </div>
+      </div>
+
+      <div class="kcal-badge">
+        🔥 <strong>548 kcal</strong> per serving &nbsp;·&nbsp; Prep time: 3 min
+      </div>
+
+      <!-- Ingredients -->
+      <div>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="tags">
+          <span class="tag">🐟 Wild Salmon</span>
+          <span class="tag">🍚 Brown Rice</span>
+          <span class="tag">🥦 Broccoli</span>
+          <span class="tag">🌿 Edamame</span>
+          <span class="tag">🧄 Ginger</span>
+          <span class="tag">🫙 Teriyaki Glaze</span>
+          <span class="tag">🌰 Sesame</span>
+        </div>
+      </div>
+
+      <!-- Purchase row -->
+      <div class="purchase-row">
+        <div class="price-block">
+          <div class="price-main">$14.99</div>
+          <div class="price-sub">per meal · Subscribe & save 15%</div>
+        </div>
+        <div class="qty-ctrl" role="group" aria-label="Quantity">
+          <button class="qty-btn" id="qty-minus" aria-label="Decrease quantity">−</button>
+          <span class="qty-val" id="qty-display">1</span>
+          <button class="qty-btn" id="qty-plus" aria-label="Increase quantity">+</button>
+        </div>
+        <button class="add-btn" id="add-to-plan" aria-label="Add to plan">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Add to Plan
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── Features ─────────────────────────────── -->
+  <section class="section" aria-label="Preparation instructions">
+    <div class="section-header">
+      <div class="section-tag">Ready in minutes</div>
+      <h2 class="section-title">Eat well, <em>effortlessly</em></h2>
+      <p class="section-sub">No meal prep stress. Each bowl is sealed fresh and ready whenever you are.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12h8M12 8v8"/></svg>
+        </div>
+        <div class="feat-title">Microwave Ready</div>
+        <div class="feat-desc">Pierce film once, microwave for 2–3 min on high. Let stand 1 min. Enjoy.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="feat-title">Oven Friendly</div>
+        <div class="feat-desc">Preheat to 180°C. Remove film, bake for 12–15 min for a crispy finish.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <div class="feat-title">Chef-Crafted</div>
+        <div class="feat-desc">Designed by Michelin-trained chefs. Restaurant quality in every container.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="feat-title">Macro Tracked</div>
+        <div class="feat-desc">Every gram accounted for. Syncs with MyFitnessPal and Apple Health.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="feat-title">5-Day Shelf Life</div>
+        <div class="feat-desc">Stays fresh for 5 days refrigerated. Freezes for up to 3 months.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="feat-title">Local Delivery</div>
+        <div class="feat-desc">Delivered in refrigerated packaging every week, on your schedule.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── Nutrition Breakdown ───────────────────── -->
+  <section class="section" aria-label="Nutritional breakdown">
+    <div class="breakdown-grid">
+      <div>
+        <div class="section-tag">Scientific breakdown</div>
+        <h2 class="section-title">Built for your <em>biology</em></h2>
+        <p class="section-sub" style="margin-bottom:32px;">Every micronutrient measured. Not just macros — we obsess over the full spectrum of what your body actually needs.</p>
+        <p style="font-size:14px; color: var(--muted); line-height:1.7;">
+          Our meals are reviewed by registered dietitians and sports scientists to meet the demands of active lifestyles. Each bowl delivers a precise blend of vitamins, minerals, and phytonutrients.
+        </p>
+      </div>
+      <div class="nutrient-list" id="nutrient-list">
+        <div class="nutrient-row">
+          <div class="nutrient-meta">
+            <span class="nutrient-name">Vitamin A</span>
+            <span class="nutrient-pct">78%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-pct="78"></div></div>
+        </div>
+        <div class="nutrient-row">
+          <div class="nutrient-meta">
+            <span class="nutrient-name">Iron</span>
+            <span class="nutrient-pct">62%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-pct="62"></div></div>
+        </div>
+        <div class="nutrient-row">
+          <div class="nutrient-meta">
+            <span class="nutrient-name">Potassium</span>
+            <span class="nutrient-pct">91%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-pct="91"></div></div>
+        </div>
+        <div class="nutrient-row">
+          <div class="nutrient-meta">
+            <span class="nutrient-name">Dietary Fibre</span>
+            <span class="nutrient-pct">54%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-pct="54"></div></div>
+        </div>
+        <div class="nutrient-row">
+          <div class="nutrient-meta">
+            <span class="nutrient-name">Omega-3</span>
+            <span class="nutrient-pct">110%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-pct="100"></div></div>
+        </div>
+        <div class="nutrient-row">
+          <div class="nutrient-meta">
+            <span class="nutrient-name">Vitamin D</span>
+            <span class="nutrient-pct">67%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-pct="67"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── Recommended ───────────────────────────── -->
+  <section class="section" aria-label="Recommended products">
+    <div class="section-header">
+      <div class="section-tag">Goes great with</div>
+      <h2 class="section-title">Complete your <em>plan</em></h2>
+      <p class="section-sub">Pair with other top-rated meals to hit every macro target throughout the week.</p>
+    </div>
+    <div class="rec-grid">
+      <div class="rec-card">
+        <div class="rec-img">
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&auto=format&fit=crop&q=80" alt="Green Power Salad" loading="lazy"/>
+        </div>
+        <div class="rec-body">
+          <div class="rec-name">Green Power Salad</div>
+          <div class="rec-kcal">320 kcal · 28g Protein</div>
+          <div class="rec-footer">
+            <div class="rec-price">$12.49</div>
+            <button class="rec-add" aria-label="Add Green Power Salad to cart">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-img">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&auto=format&fit=crop&q=80" alt="Grilled Chicken Pesto" loading="lazy"/>
+        </div>
+        <div class="rec-body">
+          <div class="rec-name">Grilled Chicken Pesto</div>
+          <div class="rec-kcal">490 kcal · 45g Protein</div>
+          <div class="rec-footer">
+            <div class="rec-price">$15.99</div>
+            <button class="rec-add" aria-label="Add Grilled Chicken Pesto to cart">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-img">
+          <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=500&auto=format&fit=crop&q=80" alt="Vegan Buddha Bowl" loading="lazy"/>
+        </div>
+        <div class="rec-body">
+          <div class="rec-name">Vegan Buddha Bowl</div>
+          <div class="rec-kcal">410 kcal · 18g Protein</div>
+          <div class="rec-footer">
+            <div class="rec-price">$13.49</div>
+            <button class="rec-add" aria-label="Add Vegan Buddha Bowl to cart">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-img">
+          <img src="https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&auto=format&fit=crop&q=80" alt="Turkish Egg Shakshuka" loading="lazy"/>
+        </div>
+        <div class="rec-body">
+          <div class="rec-name">Egg Shakshuka</div>
+          <div class="rec-kcal">380 kcal · 22g Protein</div>
+          <div class="rec-footer">
+            <div class="rec-price">$11.99</div>
+            <button class="rec-add" aria-label="Add Egg Shakshuka to cart">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ── Mobile Sticky CTA ──────────────────────── -->
+<div class="mobile-cta" aria-label="Mobile add to cart">
+  <button class="mobile-cta-btn" id="mobile-add">
+    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    Add to Plan · $14.99
+  </button>
+</div>
+
+<!-- ── Cart Toast ─────────────────────────────── -->
+<div class="cart-toast" id="cart-toast" role="alert" aria-live="polite">
+  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg">Added to your plan!</span>
+</div>
+
+<!-- ── Footer ────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Nourish<span>Co</span></div>
+    <div class="footer-links">
+      <a href="#">Meals</a>
+      <a href="#">Plans</a>
+      <a href="#">How it works</a>
+      <a href="#">Careers</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+    <p class="footer-copy">© 2025 NourishCo. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  /* ── Navbar scroll effect ─── */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  /* ── Quantity control ───────── */
+  let qty = 1;
+  const qtyDisplay = document.getElementById('qty-display');
+  document.getElementById('qty-minus').addEventListener('click', () => {
+    if (qty > 1) { qty--; qtyDisplay.textContent = qty; }
+  });
+  document.getElementById('qty-plus').addEventListener('click', () => {
+    qty++; qtyDisplay.textContent = qty;
+  });
+
+  /* ── Cart state ─────────────── */
+  let cartCount = 0;
+  const cartCountEl = document.getElementById('cart-count');
+  const toastEl = document.getElementById('cart-toast');
+  const toastMsg = document.getElementById('toast-msg');
+  let toastTimer;
+
+  function showToast(msg) {
+    toastMsg.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2800);
+  }
+
+  function addRipple(btn, e) {
+    const rect = btn.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    const size = Math.max(rect.width, rect.height);
+    ripple.className = 'ripple';
+    ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px;`;
+    btn.appendChild(ripple);
+    ripple.addEventListener('animationend', () => ripple.remove());
+  }
+
+  function handleAddToCart(e) {
+    addRipple(this, e);
+    cartCount += qty;
+    cartCountEl.textContent = cartCount;
+    showToast(`${qty} × Teriyaki Salmon Bowl added!`);
+  }
+
+  document.getElementById('add-to-plan').addEventListener('click', handleAddToCart);
+  document.getElementById('mobile-add').addEventListener('click', function(e) {
+    cartCount += qty;
+    cartCountEl.textContent = cartCount;
+    showToast(`${qty} × Teriyaki Salmon Bowl added!`);
+  });
+
+  /* ── Recommended add buttons ── */
+  document.querySelectorAll('.rec-add').forEach(btn => {
+    btn.addEventListener('click', function() {
+      cartCount++;
+      cartCountEl.textContent = cartCount;
+      const name = this.closest('.rec-card').querySelector('.rec-name').textContent;
+      showToast(`${name} added!`);
+    });
+  });
+
+  /* ── Animated nutrient bars ─── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.pct + '%';
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const nutrientSection = document.getElementById('nutrient-list');
+  if (nutrientSection) observer.observe(nutrientSection);
+</script>
+</body>
+</html>
