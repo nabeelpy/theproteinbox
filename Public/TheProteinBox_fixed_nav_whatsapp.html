@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#84cc16">
+<title>TheProteinBox — Performance Meals Delivered</title>
+
+<style>
+*,
+*::before,
+*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --accent:#84cc16;
+  --accent2:#65a30d;
+  --accent-soft:#f0fdf4;
+  --accent-mid:#dcfce7;
+  --page:#f7f8f5;
+  --surface:#fff;
+  --surface2:#f1f4ee;
+  --ink:#10140f;
+  --muted:#687267;
+  --line:#dfe5db;
+  --dark:#0c100c;
+  --dark2:#151b15;
+  --header-announcement:34px;
+  --header-nav:70px;
+  --header-total:104px;
+}
+[data-theme="dark"]{
+  --page:#090c09;
+  --surface:#111611;
+  --surface2:#171d17;
+  --ink:#f3f7f0;
+  --muted:#9ba69a;
+  --line:#293229;
+  --accent-soft:#172114;
+  --accent-mid:#20311c;
+}
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:calc(var(--header-total) + 16px);
+}
+body{
+  padding-top:var(--header-total);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--page);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+button{font:inherit;cursor:pointer;border:0;outline:0}
+
+/* FIXED HEADER */
+.announcement{
+  position:fixed;top:0;left:0;right:0;z-index:1001;
+  height:var(--header-announcement);
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:0 18px;
+  background:var(--accent);color:#081006;
+  font-size:10.5px;font-weight:800;letter-spacing:.065em;
+  text-transform:uppercase;white-space:nowrap;overflow:hidden;
+}
+nav#nav{
+  position:fixed;top:var(--header-announcement);left:0;right:0;z-index:1000;
+  height:var(--header-nav);
+  background:color-mix(in srgb,var(--surface) 88%,transparent);
+  border-bottom:1px solid color-mix(in srgb,var(--line) 75%,transparent);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  transition:.25s;
+}
+nav#nav.scrolled{
+  background:color-mix(in srgb,var(--surface) 96%,transparent);
+  box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+.nav-w{
+  width:100%;max-width:1320px;height:100%;margin:auto;padding:0 28px;
+  display:flex;align-items:center;
+}
+.logo{
+  display:inline-flex;align-items:center;gap:10px;margin-right:42px;
+  color:var(--ink);font-size:20px;font-weight:900;line-height:1;
+  letter-spacing:-.035em;flex-shrink:0;
+}
+.logo em{font-style:italic;color:var(--accent)}
+.logo-mark{
+  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  background:var(--accent);border-radius:10px;flex-shrink:0;
+}
+.logo-mark svg{
+  width:19px;height:19px;fill:none;stroke:#fff;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+.nav-links{display:flex;align-items:center;gap:3px;flex:1;min-width:0}
+.nav-links a{
+  position:relative;padding:9px 13px;border-radius:9px;color:var(--muted);
+  font-size:13px;font-weight:600;white-space:nowrap;transition:.18s;
+}
+.nav-links a:hover{color:var(--ink);background:var(--surface2)}
+.nav-links a::after{
+  content:"";position:absolute;left:13px;right:13px;bottom:4px;height:2px;
+  background:var(--accent);border-radius:99px;transform:scaleX(0);transition:.2s;
+}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-r{display:flex;align-items:center;gap:9px;margin-left:auto;flex-shrink:0}
+.theme-toggle{
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);border-radius:11px;background:var(--surface);
+  color:var(--ink);transition:.18s;
+}
+.theme-toggle:hover{border-color:var(--accent);transform:translateY(-1px)}
+.theme-toggle svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.9}
+.btn-cta{
+  min-height:40px;padding:0 18px;border-radius:11px;background:var(--accent);
+  color:#fff;font-size:12.5px;font-weight:800;box-shadow:0 4px 14px rgba(132,204,22,.25);
+  transition:.18s;
+}
+.btn-cta:hover{background:var(--accent2);transform:translateY(-1px)}
+
+/* HERO */
+.hero{
+  position:relative;
+  width:100%;
+  height:calc(100vh - var(--header-total));
+  min-height:520px;
+  overflow:hidden;
+  background:#050705;
+}
+.hero-right{position:absolute;inset:0;isolation:isolate}
+.image-only-slider .hero-right::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,rgba(0,0,0,.25),transparent 45%,rgba(0,0,0,.12));
+}
+.hero-image-slide{
+  position:absolute;inset:0;width:100%;height:100%;
+  opacity:0;transition:opacity .8s ease;
+}
+.hero-image-slide.active{opacity:1}
+.hero-image-slide img{width:100%;height:100%;object-fit:cover;object-position:center}
+.slider-controls{
+  position:absolute;right:28px;bottom:28px;z-index:10;
+  display:flex;align-items:center;gap:10px;padding:7px;
+  background:rgba(5,8,5,.55);border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(12px);border-radius:999px;
+}
+.slider-arrow{
+  width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);
+  color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+.slider-arrow:hover{background:var(--accent);color:#071006}
+.slider-dots{display:flex;gap:6px;align-items:center;padding:0 2px}
+.slider-dot{width:7px;height:7px;border-radius:99px;background:rgba(255,255,255,.35);padding:0;transition:.25s}
+.slider-dot.active{width:24px;background:var(--accent)}
+
+/* TICKER */
+.ticker{
+  overflow:hidden;background:#0b0f0b;color:#fff;height:44px;
+  display:flex;align-items:center;
+}
+.ticker-track{
+  display:flex;align-items:center;gap:25px;white-space:nowrap;
+  min-width:max-content;animation:ticker 30s linear infinite;
+}
+.ticker-item{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.ticker-sep{color:var(--accent)}
+@keyframes ticker{to{transform:translateX(-50%)}}
+
+/* GENERAL */
+.section{padding:96px 28px;scroll-margin-top:calc(var(--header-total) + 16px)}
+.section-w{max-width:1180px;margin:auto}
+.stag{
+  color:var(--accent);font-size:11px;font-weight:900;letter-spacing:.13em;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.sh1{font-size:clamp(32px,4vw,50px);line-height:1.03;letter-spacing:-.045em}
+.sh1 em{font-style:italic;color:var(--accent)}
+.sp{margin-top:14px;color:var(--muted);font-size:15px;line-height:1.7}
+
+/* HOW */
+.hiw{background:var(--surface)}
+.hiw-head{text-align:center;max-width:680px;margin:0 auto 58px}
+.steps-grid{
+  position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+}
+.steps-grid::before{
+  content:"";position:absolute;left:12%;right:12%;top:54px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--line),var(--line),transparent);
+}
+.step{
+  position:relative;z-index:1;padding:34px 30px;background:var(--surface2);
+  border:1px solid var(--line);border-radius:20px;text-align:center;
+}
+.step-num{
+  width:46px;height:46px;margin:0 auto 22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--accent);color:#fff;font-size:12px;font-weight:900;
+  box-shadow:0 6px 18px rgba(132,204,22,.22);
+}
+.step-title{font-size:18px;font-weight:800;margin-bottom:9px}
+.step-desc{color:var(--muted);font-size:13.5px;line-height:1.7}
+
+/* MEALS */
+.meals-sec{background:var(--page)}
+.meals-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:34px}
+.meals-nav{display:flex;gap:8px}
+.mnav-btn{
+  width:42px;height:42px;border:1px solid var(--line);border-radius:50%;
+  background:var(--surface);color:var(--ink);display:flex;align-items:center;justify-content:center;
+}
+.mnav-btn:hover{border-color:var(--accent);color:var(--accent)}
+.mnav-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
+.meals-track-wrap{overflow:hidden}
+.meals-track{
+  display:flex;gap:18px;transition:transform .45s cubic-bezier(.16,1,.3,1);
+}
+.meal-card{
+  flex:0 0 calc((100% - 54px)/4);overflow:hidden;background:var(--surface);
+  border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 28px rgba(16,20,15,.05);
+}
+.meal-img{height:190px;position:relative;overflow:hidden}
+.meal-img img{width:100%;height:100%;object-fit:cover;transition:transform .45s}
+.meal-card:hover .meal-img img{transform:scale(1.04)}
+.meal-badge{
+  position:absolute;top:12px;left:12px;padding:6px 9px;border-radius:99px;
+  background:#fff;color:#166534;font-size:10px;font-weight:900;
+}
+.mb-amber{color:#92400e;background:#fffbeb}
+.meal-body{padding:20px}
+.meal-name{font-size:16px;font-weight:850;margin-bottom:7px}
+.meal-desc{font-size:12.5px;line-height:1.55;color:var(--muted);min-height:40px}
+.meal-macros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}
+.mm{text-align:center}
+.mm-val{font-size:15px;font-weight:900}
+.mm-label{margin-top:3px;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.05em}
+.meal-footer{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.meal-price{font-size:15px;font-weight:900}
+.add-order-btn{
+  display:inline-flex;align-items:center;gap:6px;padding:9px 11px;border:1px solid var(--line);
+  border-radius:9px;background:var(--surface);color:var(--ink);font-size:10.5px;font-weight:800;
+}
+.add-order-btn:hover{border-color:var(--accent);color:var(--accent)}
+.add-order-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+
+/* TRUST */
+.trust-sec{background:var(--surface)}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.trust-card{
+  padding:28px;border:1px solid var(--line);border-radius:18px;background:var(--surface2);
+}
+.trust-icon{
+  width:42px;height:42px;border-radius:12px;background:var(--accent-soft);
+  color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:20px;
+}
+.trust-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}
+.trust-card h3{font-size:15px;margin-bottom:7px}
+.trust-card p{font-size:12.5px;line-height:1.65;color:var(--muted)}
+
+/* REVIEWS */
+.testi-sec{background:var(--surface)}
+.testi-head{text-align:center;max-width:650px;margin:0 auto 45px}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.testi-card{padding:28px;border:1px solid var(--line);border-radius:18px;background:var(--surface2)}
+.stars{display:flex;gap:3px;margin-bottom:18px}
+.star{width:15px;height:15px;fill:var(--accent)}
+.testi-text{font-size:14px;line-height:1.75;color:var(--ink);margin-bottom:24px}
+.testi-author{display:flex;align-items:center;gap:11px}
+.ta-av{
+  width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:900;
+}
+.ta-name{font-size:12.5px;font-weight:800}
+.ta-sub{font-size:10.5px;color:var(--muted);margin-top:3px}
+
+/* CTA */
+.cta-sec{background:var(--accent);color:#071006;padding:82px 28px;position:relative;overflow:hidden}
+.cta-w{max-width:900px;margin:auto;text-align:center;position:relative;z-index:1}
+.cta-bolt{
+  position:absolute;right:7%;top:20px;font-size:160px;opacity:.08;transform:rotate(12deg);
+}
+.cta-h1{font-size:clamp(35px,5vw,60px);line-height:1;letter-spacing:-.05em}
+.cta-h1 em{font-style:italic}
+.cta-p{max-width:680px;margin:18px auto 28px;font-size:14px;line-height:1.7;opacity:.78}
+.cta-btns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.cta-btn-dark,.cta-btn-out{
+  min-height:44px;padding:0 20px;border-radius:11px;font-size:12px;font-weight:850;
+}
+.cta-btn-dark{background:#071006;color:#fff}
+.cta-btn-out{background:transparent;color:#071006;border:1px solid rgba(7,16,6,.3)}
+
+/* FOOTER */
+footer{background:#0b0f0b;color:#a8b0a5;padding:70px 28px 28px}
+.footer-w{max-width:1180px;margin:auto}
+.footer-top{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:50px;padding-bottom:48px}
+.footer-brand .logo{color:#fff;margin-bottom:17px}
+.footer-brand p{max-width:340px;font-size:12.5px;line-height:1.7}
+.footer-socials{display:flex;gap:8px;margin-top:20px}
+.fsoc{
+  width:34px;height:34px;border:1px solid #293229;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+}
+.fsoc:hover{border-color:var(--accent);color:var(--accent)}
+.fsoc svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7}
+.fcol h5{color:#fff;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:17px}
+.fcol ul{list-style:none;display:grid;gap:11px}
+.fcol a{font-size:12px}
+.fcol a:hover{color:#fff}
+.footer-bot{
+  border-top:1px solid rgba(255,255,255,.06);padding-top:25px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.footer-bot p,.footer-bot-links a{font-size:11.5px}
+.footer-bot-links{display:flex;gap:20px}
+
+/* TOAST */
+#toast{
+  position:fixed;right:24px;bottom:24px;z-index:9998;
+  display:flex;align-items:center;gap:8px;padding:14px 20px;
+  background:#0b0f19;color:#fff;border-radius:12px;font-size:13px;font-weight:600;
+  box-shadow:0 16px 40px rgba(0,0,0,.2);
+  transform:translateY(20px);opacity:0;pointer-events:none;transition:.35s;
+}
+#toast svg{width:16px;height:16px;fill:none;stroke:#22c55e;stroke-width:2.5}
+
+/* WHATSAPP */
+.whatsapp-float{
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  width:58px;
+  height:58px;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#25D366;
+  color:#fff;
+  box-shadow:0 7px 22px rgba(0,0,0,.20),0 0 0 4px rgba(37,211,102,.12);
+  transition:transform .2s ease,box-shadow .2s ease;
+  text-decoration:none;
+}
+.whatsapp-float:hover{
+  color:#fff;
+  transform:translateY(-3px) scale(1.04);
+  box-shadow:0 11px 30px rgba(0,0,0,.25),0 0 0 5px rgba(37,211,102,.15);
+}
+.whatsapp-float:active{transform:scale(.95)}
+.whatsapp-float svg{
+  width:30px;
+  height:30px;
+  fill:currentColor;
+  display:block;
+}
+.whatsapp-label{
+  position:absolute;
+  right:70px;
+  padding:8px 11px;
+  border-radius:8px;
+  background:#111;
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  white-space:nowrap;
+  opacity:0;
+  visibility:hidden;
+  transform:translateX(5px);
+  transition:.18s;
+  pointer-events:none;
+}
+.whatsapp-float:hover .whatsapp-label{
+  opacity:1;
+  visibility:visible;
+  transform:translateX(0);
+}
+@media(max-width:768px){
+  .whatsapp-float{
+    right:18px;
+    bottom:18px;
+    width:54px;
+    height:54px;
+  }
+  .whatsapp-float svg{width:28px;height:28px}
+  .whatsapp-label{display:none}
+}
+
+/* ANIMATION */
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.fade-up.visible{opacity:1;transform:none}
+.fade-up-d1{transition-delay:.1s}.fade-up-d2{transition-delay:.2s}.fade-up-d3{transition-delay:.3s}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .nav-w{padding:0 22px}.logo{margin-right:24px}
+  .nav-links a{padding:9px;font-size:12px}
+  .meal-card{flex-basis:calc((100% - 36px)/3)}
+  .trust-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-top{grid-template-columns:1fr 1fr}
+}
+@media(max-width:900px){
+  .meal-card{flex-basis:calc((100% - 18px)/2)}
+  .steps-grid{grid-template-columns:1fr}
+  .steps-grid::before{display:none}
+  .testi-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  :root{--header-announcement:30px;--header-nav:62px;--header-total:92px}
+  .announcement{font-size:8.5px;gap:6px}
+  .announcement-sep{display:none}
+  nav#nav{top:var(--header-announcement);height:var(--header-nav)}
+  .nav-w{padding:0 16px}
+  .logo{margin-right:0;font-size:17px;gap:8px}
+  .logo-mark{width:32px;height:32px;border-radius:9px}
+  .nav-links{display:none}
+  .nav-r{gap:7px}
+  .theme-toggle{width:38px;height:38px}
+  .btn-cta{min-height:38px;padding:0 14px;font-size:11.5px}
+  .hero{height:58vh;min-height:420px}
+  .slider-controls{right:16px;bottom:18px}
+  .section{padding:72px 20px}
+  .meals-head{align-items:flex-start;gap:20px}
+  .meal-card{flex-basis:100%}
+  .trust-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  .cta-sec{padding:70px 20px}
+  .whatsapp-float{width:54px;height:54px;right:18px;bottom:18px}
+  .whatsapp-float svg{width:28px;height:28px}
+}
+@media(max-width:480px){
+  .nav-w{padding:0 12px}.logo{font-size:15.5px}
+  .logo-mark{width:30px;height:30px}
+  .btn-cta{padding:0 11px;font-size:10.5px}
+  .theme-toggle{width:36px;height:36px}
+  .meals-head{display:block}.meals-nav{margin-top:20px}
+  .footer-bot{display:block}.footer-bot-links{margin-top:12px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="announcement">
+  <span>THEPROTEINBOX</span>
+  <span class="announcement-sep">•</span>
+  <span>High-Protein Meals · Fresh Delivery · Multan</span>
+</div>
+
+<nav id="nav">
+  <div class="nav-w">
+    <a href="#home" class="logo">
+      <div class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/>
+          <path d="M4 7.5 12 12l8-4.5M12 12v9"/>
+          <path d="M8.5 5 16.5 9.5"/>
+        </svg>
+      </div>
+      The<em>ProteinBox</em>
+    </a>
+
+    <div class="nav-links">
+      <a href="#meals">Meal Plans</a>
+      <a href="#how">How It Works</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#trust">Why Us</a>
+    </div>
+
+    <div class="nav-r">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg id="theme-icon" viewBox="0 0 24 24"></svg>
+      </button>
+      <button class="btn-cta" onclick="document.getElementById('meals').scrollIntoView({behavior:'smooth'})">
+        Get Started
+      </button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero image-only-slider" id="home">
+  <div class="hero-right">
+    <div class="hero-image-slide active">
+      <img src="top1.png" alt="High protein meal bowl">
+    </div>
+    <div class="hero-image-slide">
+      <img src="top2.png" alt="Salmon protein meal">
+    </div>
+    <div class="hero-image-slide">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1800&auto=format&fit=crop&q=90" alt="Healthy chicken meal">
+    </div>
+
+    <div class="slider-controls">
+      <button class="slider-arrow" id="hero-prev" aria-label="Previous slide">←</button>
+      <div class="slider-dots">
+        <button class="slider-dot active" data-slide="0" aria-label="Slide 1"></button>
+        <button class="slider-dot" data-slide="1" aria-label="Slide 2"></button>
+        <button class="slider-dot" data-slide="2" aria-label="Slide 3"></button>
+      </div>
+      <button class="slider-arrow" id="hero-next" aria-label="Next slide">→</button>
+    </div>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">⚡ Fresh protein meals delivered</span><span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">High-protein ingredients</span><span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Flexible weekly meal plans</span><span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Macros shown on every meal</span><span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Fresh delivery across Multan</span><span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Chef-crafted, fitness-focused</span><span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">⚡ Fresh protein meals delivered</span><span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">High-protein ingredients</span><span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Flexible weekly meal plans</span><span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Macros shown on every meal</span><span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Fresh delivery across Multan</span><span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Chef-crafted, fitness-focused</span><span class="ticker-item ticker-sep">✦</span>
+  </div>
+</div>
+
+<section class="section hiw" id="how">
+  <div class="section-w">
+    <div class="hiw-head fade-up">
+      <div class="stag">Simple process</div>
+      <h2 class="sh1">Your Protein Plan in <em>3 Steps</em></h2>
+      <p class="sp">Pick your goal, choose your meals, and let TheProteinBox handle the food.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step fade-up fade-up-d1">
+        <div class="step-num">01</div>
+        <h3 class="step-title">Choose Your Goal</h3>
+        <p class="step-desc">Choose from muscle gain, fat loss, or balanced plans based on your daily nutrition goals.</p>
+      </div>
+      <div class="step fade-up fade-up-d2">
+        <div class="step-num">02</div>
+        <h3 class="step-title">Chef Prepared</h3>
+        <p class="step-desc">We prepare flavorful meals with quality ingredients and protein-forward portions.</p>
+      </div>
+      <div class="step fade-up fade-up-d3">
+        <div class="step-num">03</div>
+        <h3 class="step-title">Doorstep Delivery</h3>
+        <p class="step-desc">Ready-to-eat meals delivered weekly in refrigerated boxes. Just heat and power through your day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section meals-sec" id="meals">
+  <div class="section-w">
+    <div class="meals-head fade-up">
+      <div>
+        <div class="stag">Most ordered</div>
+        <h2 class="sh1">Customer <em>Favorites</em></h2>
+        <p class="sp">Protein-packed meals customers keep coming back for.</p>
+      </div>
+      <div class="meals-nav">
+        <button class="mnav-btn" id="prev-btn" aria-label="Previous">←</button>
+        <button class="mnav-btn" id="next-btn" aria-label="Next">→</button>
+      </div>
+    </div>
+
+    <div class="meals-track-wrap">
+      <div class="meals-track" id="meals-track">
+
+        <div class="meal-card fade-up fade-up-d1">
+          <div class="meal-img">
+            <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&auto=format&fit=crop&q=80" alt="Teriyaki Salmon Protein Box">
+            <span class="meal-badge">High Protein</span>
+          </div>
+          <div class="meal-body">
+            <div class="meal-name">Teriyaki Salmon Protein Box</div>
+            <div class="meal-desc">With steamed broccoli and brown jasmine rice.</div>
+            <div class="meal-macros">
+              <div class="mm"><div class="mm-val">38g</div><div class="mm-label">Protein</div></div>
+              <div class="mm"><div class="mm-val">42g</div><div class="mm-label">Carbs</div></div>
+              <div class="mm"><div class="mm-val">12g</div><div class="mm-label">Fats</div></div>
+            </div>
+            <div class="meal-footer">
+              <span class="meal-price">PKR 1,490</span>
+              <button class="add-order-btn" onclick="addCart(this,'Teriyaki Salmon')">＋ Add to Order</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="meal-card fade-up fade-up-d2">
+          <div class="meal-img">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&auto=format&fit=crop&q=80" alt="Chili Lime Chicken Box">
+            <span class="meal-badge mb-amber">Keto Friendly</span>
+          </div>
+          <div class="meal-body">
+            <div class="meal-name">Chili Lime Chicken Box</div>
+            <div class="meal-desc">Zesty grilled chicken with roasted cauliflower mash.</div>
+            <div class="meal-macros">
+              <div class="mm"><div class="mm-val">44g</div><div class="mm-label">Protein</div></div>
+              <div class="mm"><div class="mm-val">18g</div><div class="mm-label">Carbs</div></div>
+              <div class="mm"><div class="mm-val">14g</div><div class="mm-label">Fats</div></div>
+            </div>
+            <div class="meal-footer">
+              <span class="meal-price">PKR 1,290</span>
+              <button class="add-order-btn" onclick="addCart(this,'Chili Lime Chicken')">＋ Add to Order</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="meal-card fade-up fade-up-d3">
+          <div class="meal-img">
+            <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=600&auto=format&fit=crop&q=80" alt="Lean Beef Power Bowl">
+            <span class="meal-badge">Muscle Gain</span>
+          </div>
+          <div class="meal-body">
+            <div class="meal-name">Lean Beef Power Bowl</div>
+            <div class="meal-desc">Lean beef, roasted vegetables and herbed rice.</div>
+            <div class="meal-macros">
+              <div class="mm"><div class="mm-val">48g</div><div class="mm-label">Protein</div></div>
+              <div class="mm"><div class="mm-val">45g</div><div class="mm-label">Carbs</div></div>
+              <div class="mm"><div class="mm-val">15g</div><div class="mm-label">Fats</div></div>
+            </div>
+            <div class="meal-footer">
+              <span class="meal-price">PKR 1,390</span>
+              <button class="add-order-btn" onclick="addCart(this,'Lean Beef Power Bowl')">＋ Add to Order</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="meal-card fade-up">
+          <div class="meal-img">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop&q=80" alt="Green Protein Bowl">
+            <span class="meal-badge">Lean & Fresh</span>
+          </div>
+          <div class="meal-body">
+            <div class="meal-name">Green Protein Bowl</div>
+            <div class="meal-desc">Chicken, greens, avocado and fresh seasonal vegetables.</div>
+            <div class="meal-macros">
+              <div class="mm"><div class="mm-val">36g</div><div class="mm-label">Protein</div></div>
+              <div class="mm"><div class="mm-val">28g</div><div class="mm-label">Carbs</div></div>
+              <div class="mm"><div class="mm-val">16g</div><div class="mm-label">Fats</div></div>
+            </div>
+            <div class="meal-footer">
+              <span class="meal-price">PKR 1,250</span>
+              <button class="add-order-btn" onclick="addCart(this,'Green Protein Bowl')">＋ Add to Order</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section trust-sec" id="trust">
+  <div class="section-w">
+    <div class="hiw-head fade-up">
+      <div class="stag">Why TheProteinBox</div>
+      <h2 class="sh1">Nutrition without the <em>guesswork</em></h2>
+      <p class="sp">Built for consistency, convenience and measurable results.</p>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card fade-up"><div class="trust-icon">✓</div><h3>Macros Shown</h3><p>Know exactly what you are eating with clear protein, carb and fat information.</p></div>
+      <div class="trust-card fade-up fade-up-d1"><div class="trust-icon">◆</div><h3>Protein Forward</h3><p>Every meal is designed around satisfying, quality protein portions.</p></div>
+      <div class="trust-card fade-up fade-up-d2"><div class="trust-icon">★</div><h3>Fresh Weekly</h3><p>Chef-prepared meals delivered fresh so healthy eating stays convenient.</p></div>
+      <div class="trust-card fade-up fade-up-d3"><div class="trust-icon">⌁</div><h3>Made for Multan</h3><p>Fresh delivery designed around the routines and needs of Multan customers.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section testi-sec" id="reviews">
+  <div class="section-w">
+    <div class="testi-head fade-up">
+      <div class="stag">Customer stories</div>
+      <h2 class="sh1">Real food. <em>Real consistency.</em></h2>
+      <p class="sp">What customers say after making protein a daily habit.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card fade-up">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">The easiest way I have found to stay on track with protein during a busy work week.</p>
+        <div class="testi-author"><div class="ta-av" style="background:#dcfce7;color:#166534">AA</div><div><div class="ta-name">Ali Ahmed</div><div class="ta-sub">Fitness Enthusiast · Multan</div></div></div>
+      </div>
+      <div class="testi-card fade-up fade-up-d1">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">The portions are satisfying and the macros make it much easier to plan the rest of my day.</p>
+        <div class="testi-author"><div class="ta-av" style="background:#e0e7ff;color:#3730a3">SA</div><div><div class="ta-name">Sara Ahmed</div><div class="ta-sub">Nutrition Focused · Multan</div></div></div>
+      </div>
+      <div class="testi-card fade-up fade-up-d2">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">Lost 8kg in 8 weeks on the Lean Plan without feeling deprived. The food is genuinely delicious.</p>
+        <div class="testi-author"><div class="ta-av" style="background:#fef3c7;color:#b45309">MH</div><div><div class="ta-name">Muhammad Hassan</div><div class="ta-sub">CrossFit Athlete · Bahauddin Zakariya Uni</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-sec">
+  <div class="cta-bolt">⚡</div>
+  <div class="cta-w">
+    <h2 class="cta-h1">Ready to Hit Your <em>Protein Goals?</em></h2>
+    <p class="cta-p">Join customers who have made protein-forward eating part of their weekly routine.</p>
+    <div class="cta-btns">
+      <button class="cta-btn-dark" onclick="document.getElementById('meals').scrollIntoView({behavior:'smooth'})">Build My Protein Box</button>
+      <button class="cta-btn-out" onclick="document.getElementById('meals').scrollIntoView({behavior:'smooth'})">Explore The Menu</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-w">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#home" class="logo">
+          <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/><path d="M8.5 5 16.5 9.5"/></svg></div>
+          The<em>ProteinBox</em>
+        </a>
+        <p>High-protein meals made for people who want better food, better consistency, and better results.</p>
+        <div class="footer-socials">
+          <a class="fsoc" href="#" aria-label="Facebook">f</a>
+          <a class="fsoc" href="#" aria-label="Instagram">◎</a>
+          <a class="fsoc" href="#" aria-label="TikTok">♪</a>
+        </div>
+      </div>
+      <div class="fcol"><h5>Explore</h5><ul><li><a href="#meals">Meal Plans</a></li><li><a href="#how">How It Works</a></li><li><a href="#reviews">Reviews</a></li><li><a href="#trust">Why Us</a></li></ul></div>
+      <div class="fcol"><h5>Company</h5><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li><li><a href="#">Become a Partner</a></li></ul></div>
+      <div class="fcol"><h5>Support</h5><ul><li><a href="#">Support</a></li><li><a href="#">Delivery Areas</a></li><li><a href="#">FAQs</a></li><li><a href="#">Privacy Policy</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+      <p>© 2026 TheProteinBox. All rights reserved.</p>
+      <div class="footer-bot-links"><a href="#">Terms of Service</a><a href="#">Cookie Policy</a></div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast">
+  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-txt">Added to box!</span>
+</div>
+
+<a class="whatsapp-float" href="https://wa.me/923001234567" target="_blank" rel="noopener noreferrer" aria-label="Order on WhatsApp" title="Order on WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true">
+    <path d="M16 3.2C8.93 3.2 3.2 8.93 3.2 16c0 2.27.6 4.48 1.73 6.42L3.1 28.9l6.63-1.74A12.74 12.74 0 0 0 16 28.8c7.07 0 12.8-5.73 12.8-12.8S23.07 3.2 16 3.2Zm0 23.35c-2.03 0-4.02-.55-5.76-1.59l-.41-.25-3.93 1.03 1.05-3.82-.27-.42A10.68 10.68 0 0 1 5.33 16C5.33 10.11 10.11 5.33 16 5.33S26.67 10.11 26.67 16 21.89 26.55 16 26.55Zm5.87-7.98c-.32-.16-1.88-.93-2.17-1.03-.29-.11-.5-.16-.71.16-.21.32-.81 1.03-.99 1.24-.18.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.77-2.22-.18-.32-.02-.49.14-.65.14-.14.32-.37.47-.55.16-.18.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.71-1.72-.97-2.36-.26-.62-.52-.54-.71-.55h-.61c-.21 0-.55.08-.84.4-.29.32-1.1 1.08-1.1 2.64s1.13 3.06 1.29 3.27c.16.21 2.22 3.39 5.38 4.76.75.32 1.34.52 1.8.66.76.24 1.45.21 2 .13.61-.09 1.88-.77 2.14-1.51.26-.74.26-1.38.18-1.51-.08-.13-.29-.21-.61-.37Z"/>
+  </svg>
+  <span class="whatsapp-label">WhatsApp</span>
+</a>
+
+<script>
+const nav=document.getElementById("nav");
+window.addEventListener("scroll",()=>nav.classList.toggle("scrolled",window.scrollY>20),{passive:true});
+
+/* THEME */
+const themeToggle=document.getElementById("theme-toggle");
+const themeIcon=document.getElementById("theme-icon");
+const savedTheme=localStorage.getItem("tpb-theme");
+const prefersDark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+document.documentElement.dataset.theme=savedTheme||(prefersDark?"dark":"light");
+
+function updateThemeIcon(){
+  const dark=document.documentElement.dataset.theme==="dark";
+  themeIcon.innerHTML=dark
+    ? '<path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5 8.5 8.5 0 1 0 20.5 14.5Z"/>'
+    : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+}
+updateThemeIcon();
+themeToggle.addEventListener("click",()=>{
+  const next=document.documentElement.dataset.theme==="dark"?"light":"dark";
+  document.documentElement.dataset.theme=next;
+  localStorage.setItem("tpb-theme",next);
+  updateThemeIcon();
+});
+
+/* HERO SLIDER */
+const heroImages=[...document.querySelectorAll(".hero-image-slide")];
+const dots=[...document.querySelectorAll(".slider-dot")];
+let heroIndex=0;
+let heroTimer;
+
+function showHero(index){
+  heroIndex=(index+heroImages.length)%heroImages.length;
+  heroImages.forEach((el,i)=>el.classList.toggle("active",i===heroIndex));
+  dots.forEach((el,i)=>el.classList.toggle("active",i===heroIndex));
+}
+function resetHeroTimer(){
+  clearInterval(heroTimer);
+  heroTimer=setInterval(()=>showHero(heroIndex+1),6000);
+}
+document.getElementById("hero-next").addEventListener("click",()=>{showHero(heroIndex+1);resetHeroTimer()});
+document.getElementById("hero-prev").addEventListener("click",()=>{showHero(heroIndex-1);resetHeroTimer()});
+dots.forEach(dot=>dot.addEventListener("click",()=>{showHero(Number(dot.dataset.slide));resetHeroTimer()}));
+resetHeroTimer();
+
+/* MEAL CAROUSEL */
+const track=document.getElementById("meals-track");
+let mealOffset=0;
+function moveMeals(direction){
+  const cards=[...track.querySelectorAll(".meal-card")];
+  if(!cards.length)return;
+  const gap=18;
+  const cardW=cards[0].getBoundingClientRect().width+gap;
+  const max=Math.max(0,track.scrollWidth-track.parentElement.clientWidth);
+  mealOffset=Math.max(0,Math.min(mealOffset+direction*cardW,max));
+  track.style.transform=`translateX(-${mealOffset}px)`;
+}
+document.getElementById("next-btn").addEventListener("click",()=>moveMeals(1));
+document.getElementById("prev-btn").addEventListener("click",()=>moveMeals(-1));
+window.addEventListener("resize",()=>{mealOffset=0;track.style.transform="translateX(0)"});
+
+/* CART TOAST */
+let toastTimer;
+function addCart(btn,name){
+  const toast=document.getElementById("toast");
+  document.getElementById("toast-txt").textContent=name+" added to your box!";
+  toast.style.opacity="1";
+  toast.style.transform="translateY(0)";
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{
+    toast.style.opacity="0";
+    toast.style.transform="translateY(20px)";
+  },2400);
+  btn.innerHTML="✓ Added";
+  btn.style.background="var(--accent)";
+  btn.style.color="#fff";
+  btn.style.borderColor="var(--accent)";
+}
+
+/* REVEAL */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")});
+},{threshold:.12});
+document.querySelectorAll(".fade-up").forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
