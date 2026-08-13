@@ -376,6 +376,207 @@
       visibility:visible;
       transform:translateX(0);
     }
+
+/* =========================
+   Pricing Section
+========================= */
+
+.pricing-section {
+  padding: 120px 0;
+  background: #0c0c0c;
+  position: relative;
+}
+
+.pricing-section .container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.section-tag {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(255,115,0,.12);
+  color: #ff7300;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.section-header h2 {
+  font-size: 3rem;
+  color: #fff;
+  margin-bottom: 15px;
+  font-weight: 800;
+}
+
+.section-header h2 span {
+  color: #ff7300;
+}
+
+.section-header p {
+  color: #a0a0a0;
+  max-width: 650px;
+  margin: auto;
+  font-size: 1.1rem;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 30px;
+}
+
+.pricing-card {
+  background: #141414;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 40px 30px;
+  transition: all .35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.pricing-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(255,115,0,.4);
+}
+
+.pricing-card.featured {
+  border: 2px solid #ff7300;
+  transform: scale(1.05);
+  background: linear-gradient(
+      180deg,
+      rgba(255,115,0,.15),
+      #141414
+  );
+}
+
+.popular-badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: #ff7300;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+
+.plan-label {
+  color: #ff7300;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 25px;
+}
+
+.price {
+  color: white;
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 25px;
+}
+
+.custom-price {
+  font-size: 2.2rem;
+}
+
+.currency {
+  font-size: 1rem;
+  vertical-align: top;
+  margin-right: 5px;
+}
+
+.period {
+  display: block;
+  font-size: .95rem;
+  color: #9a9a9a;
+  font-weight: 500;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 35px;
+}
+
+.features li {
+  color: #d7d7d7;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.plan-btn {
+  display: block;
+  text-align: center;
+  background: #ff7300;
+  color: white;
+  text-decoration: none;
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: 700;
+  transition: .3s;
+}
+
+.plan-btn:hover {
+  background: #ff8f2d;
+}
+
+.discount-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 60px;
+}
+
+.discount-card {
+  background: #141414;
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 24px 40px;
+  border-radius: 20px;
+  text-align: center;
+  min-width: 220px;
+}
+
+.discount-card h3 {
+  color: #ff7300;
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.discount-card p {
+  color: #cacaca;
+}
+
+.discount-card.highlighted {
+  border: 1px solid #ff7300;
+  box-shadow: 0 0 30px rgba(255,115,0,.15);
+}
+
+@media (max-width: 992px) {
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-card.featured {
+    transform: none;
+  }
+
+  .discount-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
+    
     @media(max-width:768px){
       .whatsapp-float{
         right:18px;
@@ -531,7 +732,7 @@
       <div class="step fade-up fade-up-d1">
         <div class="step-num">01</div>
         <h3 class="step-title">Choose Your Goal</h3>
-        <p class="step-desc">Choose from muscle gain, fat loss, or balanced plans based on your daily nutrition goals.</p>
+        <p class="step-desc">Choose your meal based on your daily nutrition goals.</p>
       </div>
       <div class="step fade-up fade-up-d2">
         <div class="step-num">02</div>
@@ -541,7 +742,7 @@
       <div class="step fade-up fade-up-d3">
         <div class="step-num">03</div>
         <h3 class="step-title">Doorstep Delivery</h3>
-        <p class="step-desc">Ready-to-eat meals delivered weekly in refrigerated boxes. Just heat and power through your day.</p>
+        <p class="step-desc">Ready-to-eat meals delivered to your doorstep, whenever you want. Just heat and power through your day.</p>
       </div>
     </div>
   </div>
@@ -738,6 +939,106 @@
   </div>
 </section>
 
+<!-- Pricing Section -->
+<section id="pricing" class="pricing-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Meal Plans</span>
+      <h2>Choose Your <span>Protein Plan</span></h2>
+      <p>
+        Flexible high-protein meal plans designed for fat loss, muscle gain,
+        and long-term consistency.
+      </p>
+    </div>
+
+    <div class="pricing-grid">
+
+      <!-- Lean -->
+      <div class="pricing-card">
+        <div class="plan-label">LEAN BOX</div>
+
+        <div class="price">
+          <span class="currency">PKR</span>
+          550
+          <!-- <span class="period">/ meal</span> -->
+        </div>
+
+        <ul class="features">
+          <li>✅ 40g+ Protein</li>
+          <li>✅ Under 450 Calories</li>
+          <li>✅ Fat Loss Focused</li>
+          <li>✅ Fresh Weekly Delivery</li>
+        </ul>
+
+        </a>
+      </div>
+
+      <!-- Power -->
+      <div class="pricing-card featured">
+        <div class="popular-badge">MOST POPULAR</div>
+
+        <div class="plan-label">POWER BOX</div>
+
+        <div class="price">
+          <span class="currency">PKR</span>
+          750
+          <!-- <span class="period">/ meal</span> -->
+        </div>
+
+        <ul class="features">
+          <li>✅ 60g+ Protein</li>
+          <li>✅ Around 600 Calories</li>
+          <li>✅ Muscle Growth Focused</li>
+          <li>✅ Fresh Weekly Delivery</li>
+        </ul>
+
+        </a>
+      </div>
+
+      <!-- Full Day -->
+      <div class="pricing-card">
+        <div class="plan-label">FULL DAY PLAN</div>
+
+        <!-- <div class="price custom-price">
+          100g+
+          <span class="period">Protein Daily</span>
+        </div> -->
+
+        <div class="price">
+          <span class="currency">PKR</span>
+          1200
+          <!-- <span class="period">/ meal</span> -->
+        </div>
+
+        <ul class="features">
+          <li>✅ 100g+ Protein</li>
+          <li>✅ Around 1100 Calories</li>
+          <li>✅ Complete Daily Nutrition</li>
+          <li>✅ Multiple Meals Included</li>
+          <li>✅ Maximum Convenience</li>
+        </ul>
+
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Discounts -->
+    <div class="discount-wrapper">
+      <div class="discount-card">
+        <h3>5% OFF</h3>
+        <p>Weekly Package</p>
+      </div>
+
+      <div class="discount-card highlighted">
+        <h3>10% OFF</h3>
+        <p>Monthly Package</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <section class="section testi-sec" id="reviews">
   <div class="section-w">
     <div class="testi-head fade-up">
@@ -776,6 +1077,9 @@
     </div>
   </div>
 </section>
+
+
+
 
 <footer>
   <div class="footer-w">
